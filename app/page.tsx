@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import IgHeader from "./components/IgHeader";
 import OddsAssistant from "./components/OddsAssistant";
 
 type Operator = {
@@ -171,7 +172,6 @@ export default function Home() {
   const [market, setMarket] = useState(0);
   const [stake, setStake] = useState(50);
   const [cmsMode, setCmsMode] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [toast, setToast] = useState("");
   const [championshipIndex, setChampionshipIndex] = useState(0);
   const [fixtureIndex, setFixtureIndex] = useState(0);
@@ -199,30 +199,7 @@ export default function Home() {
         <span className="desktop-legal">• Jogue com responsabilidade</span>
       </div>
 
-      <div className="ig-network">
-        <div className="ig-network-inner">
-          <a className="ig-mark" href="https://www.ig.com.br" aria-label="Portal iG">iG</a>
-          <nav>
-            <a href="#">último segundo</a><a href="#">economia</a><a href="#">gente</a><a href="#">esporte</a><a href="#">carros</a><a href="#">pets</a><a href="#">receitas</a>
-          </nav>
-          <span>Buscar</span>
-        </div>
-      </div>
-
-      <header className="jj-header">
-        <div className="jj-header-inner">
-          <a href="#inicio"><img src="jogoajogo-logo.png" alt="Jogo a Jogo" /></a>
-          <button className="mobile-menu" onClick={() => setMenuOpen(!menuOpen)}>Menu</button>
-          <nav className={menuOpen ? "open" : ""}>
-            <a href="#palpites">Palpites</a>
-            <a href="#comparador">Odds</a>
-            <a href="#operadores">Casas de apostas</a>
-            <a href="#guias">Guia para apostas</a>
-            <a href="#responsavel">Jogo responsável</a>
-          </nav>
-          <button className="cms-toggle" onClick={() => setCmsMode(!cmsMode)}>{cmsMode ? "Ocultar estrutura" : "Ver estrutura CMS"}</button>
-        </div>
-      </header>
+      <IgHeader onCmsToggle={() => setCmsMode(!cmsMode)} cmsMode={cmsMode} />
 
       <div className="ad-space"><span>PUBLICIDADE</span><div>970 × 90</div></div>
 

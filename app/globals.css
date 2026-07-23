@@ -32,6 +32,131 @@ main { min-height: 100vh; padding-bottom: 30px; }
 .ig-network nav { display: flex; gap: 14px; flex: 1; }
 .ig-network nav a:nth-child(4) { color: var(--green); font-weight: 800; }
 
+.ig-main-header { display: contents; }
+.ig-channel-network {
+  margin-top: 34px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  background: #fafafa;
+  border-bottom: 1px solid #e5e5e5;
+}
+.ig-channel-network nav {
+  width: min(1230px, calc(100% - 32px));
+  min-height: 40px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.ig-channel-network a {
+  padding: 13px 4px;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 700;
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+.ig-channel-network a:hover { text-decoration: underline; }
+.ig-channel-network .ultimo-segundo { color: #ef6c0a; }
+.ig-channel-network .economia { color: #d15600; }
+.ig-channel-network .gente { color: #ec1861; }
+.ig-channel-network .esporte { color: #06880d; }
+.ig-channel-network .carros { color: #9d0a00; }
+.ig-channel-network .pets { color: #e62514; }
+.ig-channel-network .receitas { color: #d44865; }
+.ig-channel-network .tecnologia { color: #295ff2; }
+.ig-channel-network .turismo { color: #3f51b5; }
+.ig-channel-network .igplay { color: #0056db; }
+.ig-channel-network .igmais { color: #f54931; }
+.ig-channel-network .parceiros { color: #0d68f5; }
+
+.ig-minimal-header {
+  position: sticky;
+  top: 34px;
+  z-index: 90;
+  min-height: 66px;
+  background: #fff;
+  border-bottom: 1px solid #eceeec;
+  box-shadow: 0 2px 8px rgba(0,0,0,.035);
+}
+.ig-minimal-content {
+  position: relative;
+  width: min(1285px, calc(100% - 32px));
+  min-height: 66px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ig-color-logo {
+  position: absolute;
+  left: 0;
+  width: 78px;
+  height: 62px;
+  display: flex;
+  align-items: center;
+}
+.ig-color-logo img { width: 74px; height: 58px; display: block; object-fit: contain; }
+.ig-channel-logo { display: flex; align-items: center; justify-content: center; }
+.ig-channel-logo img { width: 200px; height: auto; display: block; }
+.ig-header-actions {
+  position: absolute;
+  right: 0;
+  min-width: 220px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.ig-mail-link {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-right: 15px;
+  margin-right: 5px;
+  color: #2d332f;
+  border-right: 1px solid #d9ddda;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+}
+.ig-mail-link img { width: 19px; height: 14px; object-fit: contain; }
+.ig-header-actions form { position: relative; height: 35px; display: flex; align-items: center; justify-content: flex-end; }
+.ig-header-actions form label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(1px,1px,1px,1px); }
+.ig-header-actions form input {
+  width: 38px;
+  height: 35px;
+  padding: 5px 6px 5px 35px;
+  color: #222;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 30px;
+  outline: 0;
+  cursor: pointer;
+  font-size: 11px;
+  transition: width .25s ease, background .25s ease;
+}
+.ig-header-actions form input:focus { width: 190px; padding-right: 10px; background: white; border-color: #d8ddd9; cursor: text; }
+.ig-header-actions form > img { position: absolute; left: 9px; width: 19px; height: 19px; pointer-events: none; }
+.ig-mobile-menu-button, .ig-channel-menu { display: none; }
+.prototype-toolbar {
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 4px max(16px, calc((100% - 1080px) / 2));
+  color: #7b837d;
+  background: #f7f8f7;
+  border-bottom: 1px solid #e7eae8;
+  font-size: 7px;
+  letter-spacing: .08em;
+}
+.prototype-toolbar button { padding: 5px 8px; color: var(--green-dark); background: white; border: 1px solid #b4d9c0; border-radius: 3px; font-size: 7px; font-weight: 800; }
+
 .jj-header { background: white; border-bottom: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0,0,0,.03); }
 .jj-header-inner { min-height: 82px; display: grid; grid-template-columns: 190px 1fr auto; align-items: center; gap: 28px; }
 .jj-header img { display: block; width: 174px; height: auto; }
@@ -322,6 +447,8 @@ h1, h2, h3 { font-family: var(--font-space), Arial, sans-serif; }
 .iGfooter_social-text a { font-family: Arial, sans-serif; font-size: 11px; font-weight: 800; }
 
 @media (max-width: 900px) {
+  .ig-channel-network nav { gap: 17px; justify-content: flex-start; overflow-x: auto; scrollbar-width: none; }
+  .ig-channel-network nav::-webkit-scrollbar { display: none; }
   .ig-network nav { display: none; }
   .jj-header-inner { grid-template-columns: 160px 1fr auto; }
   .jj-header img { width: 150px; }
@@ -342,6 +469,42 @@ h1, h2, h3 { font-family: var(--font-space), Arial, sans-serif; }
 
 @media (max-width: 620px) {
   .desktop-legal { display: none; }
+  .ig-channel-network { display: none; }
+  .ig-minimal-header { margin-top: 34px; top: 34px; min-height: 60px; }
+  .ig-minimal-content { width: calc(100% - 24px); min-height: 60px; }
+  .ig-color-logo { position: relative; left: auto; margin-right: auto; width: 59px; height: 50px; }
+  .ig-color-logo img { width: 59px; height: 50px; }
+  .ig-channel-logo { position: absolute; left: 50%; transform: translateX(-50%); }
+  .ig-channel-logo img { width: 145px; }
+  .ig-header-actions { display: none; }
+  .ig-mobile-menu-button {
+    position: absolute;
+    right: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+  }
+  .ig-mobile-menu-button i { width: 22px; height: 2px; display: block; background: #1f2521; }
+  .ig-channel-menu {
+    position: absolute;
+    inset: 60px 0 auto;
+    display: none;
+    flex-direction: column;
+    padding: 16px 20px 20px;
+    background: #181d19;
+    box-shadow: 0 14px 30px rgba(0,0,0,.18);
+  }
+  .ig-channel-menu.open { display: flex; }
+  .ig-channel-menu strong { margin-bottom: 6px; color: #8ee9a8; font-size: 9px; }
+  .ig-channel-menu a { padding: 11px 0; color: white; border-bottom: 1px solid #303732; font-size: 11px; }
+  .prototype-toolbar { justify-content: space-between; }
   .ig-network-inner { justify-content: space-between; }
   .jj-header-inner { min-height: 68px; grid-template-columns: 138px 1fr auto; gap: 8px; }
   .jj-header img { width: 135px; }

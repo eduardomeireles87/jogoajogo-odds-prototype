@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import IgFooter from "../../components/IgFooter";
+import IgHeader from "../../components/IgHeader";
 import OddsAssistant from "../../components/OddsAssistant";
 
 const matchOdds = [
@@ -37,20 +38,7 @@ export default function MatchPage() {
   return (
     <main className="match-page">
       <div className="legal-top"><b>18+</b><span>MINISTÉRIO DA FAZENDA ADVERTE: APOSTA NÃO É INVESTIMENTO</span><span className="desktop-legal">• Jogue com responsabilidade</span></div>
-      <div className="ig-network">
-        <div className="ig-network-inner">
-          <a className="ig-mark" href="https://www.ig.com.br">iG</a>
-          <nav><a href="#">último segundo</a><a href="#">economia</a><a href="#">gente</a><a href="#">esporte</a><a href="#">carros</a><a href="#">receitas</a></nav>
-          <span>Buscar</span>
-        </div>
-      </div>
-      <header className="jj-header">
-        <div className="jj-header-inner match-header-inner">
-          <a href="../../"><img src="../../jogoajogo-logo.png" alt="Jogo a Jogo" /></a>
-          <nav><a href="../../">Início</a><a href="#dados">Dados ao vivo</a><a href="#odds">Odds</a><a href="#responsavel">Jogo responsável</a></nav>
-          <a className="back-home" href="../../">← Voltar à home</a>
-        </div>
-      </header>
+      <IgHeader assetPrefix="../../" />
 
       <div className="match-api-bar">
         <div><i /> DADOS CONECTADOS</div>
