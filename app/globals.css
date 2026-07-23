@@ -29,6 +29,13 @@ main { overflow: clip; }
   border-bottom: 1px solid rgba(255,255,255,.12);
 }
 .legal-rail strong { color: var(--lime); font-size: 13px; }
+.regulatory-dock {
+  position: fixed; inset: auto 0 0; z-index: 95; min-height: 28px;
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+  padding: 6px 18px; color: #a9b4ac; background: rgba(8,15,10,.96);
+  border-top: 1px solid #28322b; font-size: 7px; white-space: nowrap; backdrop-filter: blur(14px);
+}
+.regulatory-dock strong { color: var(--lime); letter-spacing: .09em; }
 .site-header {
   position: fixed; inset: 36px 0 auto; z-index: 90; height: 74px;
   display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 34px;
@@ -234,7 +241,7 @@ footer { padding: 60px max(32px, calc((100vw - 1280px) / 2)) 40px; color: white;
 .footer-warning strong { color: #dce4de; }
 footer > small { display: block; margin-top: 24px; color: #536057; font-size: 8px; }
 
-.bet-slip { position: fixed; z-index: 120; right: 22px; bottom: 22px; width: 320px; padding: 22px; transform: translateY(calc(100% + 50px)); transition: transform .28s ease; color: var(--ink); background: white; border: 1px solid #b8d5c0; border-radius: 16px; box-shadow: 0 22px 70px rgba(0,0,0,.25); }
+.bet-slip { position: fixed; z-index: 120; right: 22px; bottom: 46px; width: 320px; padding: 22px; transform: translateY(calc(100% + 80px)); transition: transform .28s ease; color: var(--ink); background: white; border: 1px solid #b8d5c0; border-radius: 16px; box-shadow: 0 22px 70px rgba(0,0,0,.25); }
 .bet-slip.open { transform: translateY(0); }
 .slip-close { position: absolute; right: 12px; top: 10px; border: 0; background: transparent; color: #778079; font-size: 20px; }
 .bet-slip > strong { display: block; padding-right: 20px; font-family: var(--font-space); }
@@ -264,6 +271,7 @@ footer > small { display: block; margin-top: 24px; color: #536057; font-size: 8p
 
 @media (max-width: 640px) {
   .legal-rail { justify-content: flex-start; gap: 7px; height: 42px; padding-inline: 12px; font-size: 8px; }
+  .regulatory-dock { justify-content: flex-start; overflow-x: auto; gap: 13px; padding-inline: 12px; }
   .site-header { inset-block-start: 42px; height: 64px; }
   .site-header nav { top: 64px; }
   .hero { padding: 154px 20px 84px; }
@@ -298,7 +306,7 @@ footer > small { display: block; margin-top: 24px; color: #536057; font-size: 8p
   .steps div:last-child { border-bottom: 0; }
   .footer-top { align-items: start; flex-direction: column; gap: 10px; }
   .footer-grid { grid-template-columns: 1fr; gap: 30px; }
-  .bet-slip { width: calc(100% - 24px); right: 12px; bottom: 12px; }
+  .bet-slip { width: calc(100% - 24px); right: 12px; bottom: 42px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -105,6 +105,12 @@ export default function Home() {
         <span>MINISTÉRIO DA FAZENDA ADVERTE: APOSTA NÃO É INVESTIMENTO</span>
         <span className="legal-wide">• Jogue com responsabilidade • Odds e dados ilustrativos neste protótipo</span>
       </div>
+      <div className="regulatory-dock" aria-label="Identificação dos operadores exibidos">
+        <strong>OPERADORES EXIBIDOS</strong>
+        <span>Superbet — CNPJ 54.071.596/0001-40 · SPA/MF 2.090/2024</span>
+        <span>bet365 — CNPJ 47.123.407/0001-70 · SPA/MF 250/2025</span>
+        <span>Betano — CNPJ 46.786.961/0001-74 · SPA/MF 246/2025</span>
+      </div>
 
       <header className="site-header">
         <a className="brand" href="#top" aria-label="Jogo a Jogo — início">
