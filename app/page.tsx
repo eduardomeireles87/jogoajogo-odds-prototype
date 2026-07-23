@@ -28,6 +28,46 @@ const picks = [
 const legalText = (operator: Operator) =>
   `${operator.name} — CNPJ ${operator.cnpj} · ${operator.portaria}`;
 
+const igChannels = [
+  ["Home", "https://www.ig.com.br/"],
+  ["Último Segundo", "https://ultimosegundo.ig.com.br/"],
+  ["Economia", "https://economia.ig.com.br/"],
+  ["Gente", "https://gente.ig.com.br/"],
+  ["Esporte", "https://esporte.ig.com.br/"],
+  ["Carros", "https://carros.ig.com.br/"],
+  ["Delas", "https://delas.ig.com.br/"],
+  ["Deles", "https://deles.ig.com.br/"],
+  ["Saúde", "https://saude.ig.com.br/"],
+  ["Queer", "https://queer.ig.com.br/"],
+  ["Canal do Pet", "https://canaldopet.ig.com.br/"],
+  ["Receitas", "https://receitas.ig.com.br/"],
+  ["Turismo", "https://turismo.ig.com.br/"],
+  ["Tecnologia", "https://tecnologia.ig.com.br/"],
+  ["iG Mais", "https://igmais.ig.com.br"],
+];
+
+const igCorporateLinks = [
+  ["Anuncie", "https://centraldoanunciante.ig.com.br/"],
+  ["Política de privacidade", "https://institucional.ig.com.br/2020-11-05/politica-de-privacidade-ig.html"],
+  ["Termos de Uso", "https://institucional.ig.com.br/2020-11-05/termos-de-uso.html"],
+  ["Institucional", "https://institucional.ig.com.br/"],
+  ["Quem Somos", "https://institucional.ig.com.br/2021-07-13/quem-somos--visao--missao-e-valores.html"],
+  ["Fale Conosco", "https://igcorp.octadesk.com/kb/"],
+  ["E-mail iG", "https://vendas-mail.ig.com.br/"],
+  ["Suporte e-mail", "https://igcorp.octadesk.com/helpcenter/new-ticket/"],
+];
+
+const igSocials = [
+  ["Facebook", "https://www.facebook.com/ig", "0 0 9 16", "M6.808 2.656h1.504V.112A21.2 21.2 0 0 0 6.12 0C3.944 0 2.456 1.328 2.456 3.76v2.096H0v2.848h2.456V16H5.4V8.704h2.448l.368-2.848H5.4V4.04c0-.84.224-1.384 1.408-1.384Z"],
+  ["X", "https://x.com/iG", "0 0 14 14", "M8.332 5.928 13.544 0h-1.235L7.783 5.147 4.169 0H0l5.466 7.784L0 14h1.235l4.779-5.436L9.831 14H14L8.332 5.928ZM6.64 7.852.086 7.077 1.68.91h1.897l3.556 4.977.554.775 4.622 6.47h-1.897L6.64 7.852Z"],
+  ["Instagram", "https://www.instagram.com/portal_ig/", "0 0 18 17", "M12.723.19H5.287a4.34 4.34 0 0 0-4.337 4.337v7.435a4.34 4.34 0 0 0 4.337 4.338h7.436a4.34 4.34 0 0 0 4.337-4.338V4.527A4.34 4.34 0 0 0 12.723.19ZM9.005 11.962a3.718 3.718 0 1 1 0-7.435 3.718 3.718 0 0 1 0 7.435Zm4.647-7.435a.929.929 0 1 1 0-1.858.929.929 0 0 1 0 1.858Zm-2.169 3.718a2.478 2.478 0 1 1-4.956 0 2.478 2.478 0 0 1 4.956 0Z"],
+  ["LinkedIn", "https://www.linkedin.com/company/portalig/", "0 0 15 15", "M3.148 1.575a1.574 1.574 0 1 1-3.148 0 1.574 1.574 0 0 1 3.148 0Zm.047 2.738H.047v9.854h3.148V4.313Zm4.974 0H5.037v9.854h3.1V8.996c0-2.88 3.754-3.148 3.754 0v5.171H15V7.926c0-4.856-5.556-4.675-6.863-2.29l.032-1.323Z"],
+  ["TikTok", "https://www.tiktok.com/@portal_ig?lang=pt-BR", "0 0 16 19", "M12.699 2.929A4.42 4.42 0 0 1 11.617.05H8.463v12.659a2.645 2.645 0 0 1-2.644 2.552 2.66 2.66 0 0 1-2.654-2.654c0-1.756 1.694-3.073 3.44-2.532V6.849C3.083 6.38 0 9.116 0 12.607c0 3.399 2.818 5.819 5.809 5.819a5.81 5.81 0 0 0 5.808-5.819V6.186a7.594 7.594 0 0 0 4.39 1.409V4.44s-1.92.092-3.308-1.511Z"],
+  ["Spotify", "https://open.spotify.com/show/3c9woJ6Tzx3JiRFoUp8Mrl", "0 0 24 24", "M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0Zm5.78 17.602a.75.75 0 0 1-1.06.218c-2.43-1.488-5.48-1.83-9.088-1.012a.75.75 0 0 1-.362-1.452c3.938-.89 7.356-.473 10.125 1.236a.75.75 0 0 1-.615 1.01Zm.99-2.584a.938.938 0 0 1-1.325.271c-2.7-1.656-6.8-2.136-10.05-.95a.938.938 0 0 1-.453-1.808c3.738-1.332 8.356-.78 11.45 1.15a.938.938 0 0 1-.622 1.337Zm.108-2.823c-3.228-1.889-8.52-2.12-11.756-1.176a1.124 1.124 0 1 1-.54-2.164c3.7-1.08 9.55-.805 13.35 1.43a1.125 1.125 0 0 1-.72 2.056l-.334-.14Z"],
+  ["YouTube", "https://www.youtube.com/ig", "0 0 19 15", "M9.487.291c.494.003 1.732.014 3.047.064l.466.019c1.324.058 2.646.159 3.303.33.875.23 1.562.903 1.795 1.755.37 1.354.416 3.995.422 4.635v.283c-.006.64-.052 3.282-.422 4.636-.236.855-.924 1.528-1.795 1.756-.657.17-1.98.271-3.303.33l-.466.019c-1.315.049-2.553.061-3.047.063h-.454c-1.046-.005-5.423-.05-6.816-.412-.874-.231-1.562-.903-1.795-1.756C.052 10.66.006 8.017 0 7.377v-.283c.006-.64.052-3.281.422-4.635C.658 1.604 1.346.931 2.218.705 3.61.341 7.988.297 9.034.291h.453ZM7.408 4.198v6.078l5.556-3.039-5.556-3.039Z"],
+  ["Telegram", "https://t.me/portalig", "0 0 24 24", "M22 2 11 13h11V2ZM2 10.5 22 2l-8.5 20-3.5-8L2 10.5Z"],
+];
+
 function Team({ code, name }: { code: string; name: string }) {
   return <div className="team"><span>{code}</span><strong>{name}</strong></div>;
 }
@@ -248,12 +288,42 @@ export default function Home() {
         </div>
       </section>
 
-      <footer>
-        <div className="page-shell footer-inner">
-          <img src="/jogoajogo-logo.png" alt="Jogo a Jogo" />
-          <div><strong>Produto</strong><a href="#palpites">Palpites</a><a href="#comparador">Comparador</a><a href="#operadores">Casas parceiras</a></div>
-          <div><strong>Informação</strong><a href="#guias">Guia para apostas</a><a href="#responsavel">Jogo responsável</a></div>
-          <p>Protótipo para validação interna. Odds ilustrativas e nenhum fluxo realiza apostas.</p>
+      <footer className="iGfooter">
+        <div className="iGfooter_container">
+          <img
+            loading="lazy"
+            className="iGfooter_logo"
+            src="https://i0.statig.com.br/imgs/IG_Logo_PB.png"
+            alt="iG logo footer"
+            title="iG logo footer"
+          />
+          <div className="iGfooter_sobre">
+            <nav className="iGfooter_sites" aria-label="Canais do iG">
+              <ul>
+                {igChannels.map(([label, href]) => (
+                  <li key={label}><a href={href}>{label}</a></li>
+                ))}
+              </ul>
+            </nav>
+            <div className="iGfooter_social">
+              <h3>Siga o iG nas redes sociais:</h3>
+              {igSocials.map(([label, href, viewBox, path]) => (
+                <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>
+                  <svg viewBox={viewBox} aria-hidden="true"><path d={path} /></svg>
+                </a>
+              ))}
+            </div>
+            <nav className="iGfooter_corporate" aria-label="Links institucionais do iG">
+              <ul>
+                {igCorporateLinks.map(([label, href]) => (
+                  <li key={label}><a href={href}>{label}</a></li>
+                ))}
+              </ul>
+            </nav>
+            <div className="iGfooter_rodape">
+              <p>© Copyright 2000-2026, iG Publicidade e Conteúdo</p>
+            </div>
+          </div>
         </div>
       </footer>
 

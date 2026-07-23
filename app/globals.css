@@ -34,7 +34,7 @@ main { min-height: 100vh; padding-bottom: 30px; }
 
 .jj-header { background: white; border-bottom: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0,0,0,.03); }
 .jj-header-inner { min-height: 82px; display: grid; grid-template-columns: 190px 1fr auto; align-items: center; gap: 28px; }
-.jj-header img, footer img { display: block; width: 174px; height: auto; }
+.jj-header img { display: block; width: 174px; height: auto; }
 .jj-header nav { display: flex; justify-content: center; gap: 22px; color: #4e5650; font-size: 11px; font-weight: 600; }
 .jj-header nav a:hover { color: var(--green); }
 .cms-toggle { padding: 9px 11px; color: var(--green-dark); background: white; border: 1px solid #a9d8bb; border-radius: 4px; font-size: 9px; font-weight: 700; }
@@ -174,11 +174,46 @@ h1, h2, h3 { font-family: var(--font-space), Arial, sans-serif; }
 .responsible p { max-width: 660px; margin: 0; color: #b9c9be; font-size: 10px; line-height: 1.6; }
 .responsible a { padding: 11px 13px; color: #183520; background: #c9f26b; border-radius: 4px; font-size: 9px; font-weight: 800; }
 
-footer { background: #f5f6f5; border-top: 1px solid var(--line); }
-.footer-inner { display: grid; grid-template-columns: 1.2fr .8fr .8fr 1.5fr; gap: 35px; align-items: start; }
-.footer-inner > div { display: flex; flex-direction: column; gap: 8px; color: var(--muted); font-size: 9px; }
-.footer-inner > div strong { color: var(--ink); }
-.footer-inner > p { margin: 0; color: #8a918c; font-size: 8px; line-height: 1.6; }
+.iGfooter {
+  width: min(1280px, calc(100% - 32px));
+  margin: 16px auto 80px;
+  padding: 0 16px;
+  color: #000;
+  background: #fff;
+  border-top: 1px solid #000;
+  font-family: Arial, sans-serif;
+}
+.iGfooter_container { width: 100%; padding-top: 14px; }
+.iGfooter_logo { display: block; width: 80px; height: 80px; object-fit: contain; }
+.iGfooter_sobre { display: flex; flex-direction: column; margin-top: 8px; }
+.iGfooter ul { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin: 0; padding: 0; list-style: none; }
+.iGfooter_sites ul { margin-top: 8px; }
+.iGfooter_sites a { color: #000; font-size: 14px; line-height: 18px; font-weight: 600; }
+.iGfooter a:hover { text-decoration: underline; }
+.iGfooter_social {
+  min-height: 47px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 16px 0;
+  padding-top: 16px;
+  border-top: 1px solid #e6e8ea;
+}
+.iGfooter_social h3 { margin: 0 8px 0 0; font-family: Georgia, serif; font-size: 16px; line-height: 20px; font-weight: 600; }
+.iGfooter_social a {
+  width: 19px;
+  height: 19px;
+  display: inline-grid;
+  place-items: center;
+  color: #000;
+  text-decoration: none;
+}
+.iGfooter_social a svg { width: 18px; height: 18px; fill: currentColor; }
+.iGfooter_social a:hover { color: #fff; background: #000; border-radius: 50%; text-decoration: none; }
+.iGfooter_corporate ul { margin-bottom: 18px; gap: 18px; }
+.iGfooter_corporate a { color: #000; font-size: 12px; line-height: 16px; font-weight: 400; }
+.iGfooter_rodape { background: #fff; }
+.iGfooter_rodape p { margin: 0; font-size: 12px; line-height: 16px; }
 
 .regulatory-dock { position: fixed; inset: auto 0 0; z-index: 95; min-height: 29px; display: flex; align-items: center; justify-content: flex-start; gap: 16px; padding: 6px 14px; color: #b7c0ba; background: rgba(23,27,24,.97); border-top: 1px solid #343b36; font-size: 6.5px; white-space: nowrap; overflow-x: auto; }
 .regulatory-dock strong { position: sticky; left: 0; color: #c9f26b; background: #171b18; font-size: 7px; }
@@ -228,8 +263,12 @@ footer { background: #f5f6f5; border-top: 1px solid var(--line); }
   .operator-grid { grid-template-columns: 1fr 1fr; }
   .responsible-inner { grid-template-columns: 1fr; }
   .responsible-inner > b { width: 55px; height: 55px; }
-  .footer-inner { grid-template-columns: 1fr 1fr; }
-  .footer-inner > img, .footer-inner > p { grid-column: 1 / -1; }
+  .iGfooter { width: calc(100% - 24px); margin-bottom: 100px; padding-inline: 0; }
+  .iGfooter_sites ul { gap: 10px 16px; }
+  .iGfooter_sites a { font-size: 13px; font-weight: 400; }
+  .iGfooter_social { flex-wrap: wrap; justify-content: flex-start; gap: 14px; }
+  .iGfooter_social h3 { width: 100%; }
+  .iGfooter_corporate ul { gap: 10px 16px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
