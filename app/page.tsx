@@ -25,6 +25,37 @@ const picks = [
   { sport: "Futebol", league: "Copa Sul-Americana", home: "Bolívar", away: "Grêmio", homeCode: "BOL", awayCode: "GRE", time: "Hoje • 23:00", odds: [1.73, 4.15, 5.4], verified: "Mais de 2,5 gols", verifiedOdd: "1.78", operator: "bet365" },
 ];
 
+const latestNews = [
+  {
+    category: "BRASILEIRÃO",
+    title: "Corinthians tenta se aproximar do G-4 contra o ameaçado Remo",
+    description: "Timão quer vencer de olho na zona da Libertadores, enquanto o Leão Azul luta para sair do Z-4.",
+    image: "https://i0.statig.com.br/bancodeimagens/71/o0/c0/71o0c0vchrh6cba9voi511v89.jpg",
+    href: "https://esporte.ig.com.br/jogoajogo/2026-07-23/corinthians-remo-brasileirao-19-rodada-prognostico-onde-assistir.html",
+  },
+  {
+    category: "BRASILEIRÃO",
+    title: "Botafogo e Vitória se enfrentam em duelo atrasado da 4ª rodada",
+    description: "Equipes fazem confronto direto para se aproximar do G-4 do Brasileirão.",
+    image: "https://i0.statig.com.br/bancodeimagens/1e/ls/pg/1elspg14mqevimbhhzg6zot2s.jpg",
+    href: "https://esporte.ig.com.br/jogoajogo/2026-07-22/botafogo-vitoria-brasileirao-4-rodada-prognostico-onde-assistir.html",
+  },
+  {
+    category: "TRANSFERÊNCIAS",
+    title: "Transfer Ban: os 3 clubes brasileiros impedidos de contratar",
+    description: "São Paulo, Corinthians e Santos entraram na janela sem poder inscrever novos jogadores.",
+    image: "https://i0.statig.com.br/bancodeimagens/48/c9/27/48c92752b8kk3crx6lamhjg5s.jpg",
+    href: "https://esporte.ig.com.br/jogoajogo/2026-07-22/transfer-ban-3-clubes-brasileiros-impedidos-contratar-sao-paulo-corinthians-santos.html",
+  },
+  {
+    category: "SUL-AMERICANA",
+    title: "Grêmio desafia altitude contra o Bolívar nos playoffs das oitavas",
+    description: "Equipe de Luís Castro enfrenta os 3.650 metros de La Paz no mata-mata continental.",
+    image: "https://i0.statig.com.br/bancodeimagens/3x/32/a1/3x32a1wpfd56zy12xts1cjwe2.jpg",
+    href: "https://esporte.ig.com.br/jogoajogo/2026-07-22/bolivar-gremio-sul-americana-playoffs-oitavas-de-final-onde-assistir.html",
+  },
+];
+
 const legalText = (operator: Operator) =>
   `${operator.name} — CNPJ ${operator.cnpj} · ${operator.portaria}`;
 
@@ -277,6 +308,31 @@ export default function Home() {
               <small>18+ • Apostar pode causar dependência.</small>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="latest-news" id="fique-por-dentro">
+        <div className="page-shell">
+          <CmsTag>componenteAjax · empilhamento editorial</CmsTag>
+          <div className="section-title">
+            <div><h2>Fique por dentro</h2></div>
+            <a href="https://esporte.ig.com.br/jogoajogo/">Ver todas</a>
+          </div>
+          <div className="news-grid">
+            {latestNews.map((article) => (
+              <article key={article.title}>
+                <a href={article.href} target="_blank" rel="noreferrer">
+                  <img loading="lazy" src={article.image} alt="" />
+                  <div>
+                    <span>{article.category}</span>
+                    <h3>{article.title}</h3>
+                    <p>{article.description}</p>
+                    <small>Leia mais →</small>
+                  </div>
+                </a>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
