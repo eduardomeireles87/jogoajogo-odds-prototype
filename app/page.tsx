@@ -26,6 +26,49 @@ const picks = [
   { sport: "Futebol", league: "Copa Sul-Americana", home: "Bolívar", away: "Grêmio", homeCode: "BOL", awayCode: "GRE", time: "Hoje • 23:00", odds: [1.73, 4.15, 5.4], verified: "Mais de 2,5 gols", verifiedOdd: "1.78", operator: "bet365" },
 ];
 
+const dailyTickets = [
+  {
+    badge: "ODD 3+",
+    league: "BRASILEIRÃO 2026",
+    match: "Corinthians x Remo + Botafogo x Vitória",
+    selection: "Corinthians vence + Botafogo ou empate",
+    odd: "3.25",
+    profile: "MAIOR RETORNO",
+  },
+  {
+    badge: "ODD EQUILIBRADA",
+    league: "BRASILEIRÃO 2026",
+    match: "Corinthians x Remo",
+    selection: "Mais de 1,5 gols na partida",
+    odd: "1.72",
+    profile: "ESCOLHA DO DIA",
+  },
+];
+
+const championships = [
+  {
+    name: "Brasileirão Série A",
+    games: [
+      { name: "Corinthians x Remo", odds: [[1.57, 4.15, 6.75], [1.58, 4.1, 6.9], [1.59, 4.05, 6.8], [1.6, 4.2, 6.7], [1.62, 4.0, 6.65]] },
+      { name: "Botafogo x Vitória", odds: [[1.74, 3.72, 5.1], [1.76, 3.68, 5.0], [1.73, 3.75, 5.2], [1.75, 3.7, 5.15], [1.78, 3.65, 5.05]] },
+    ],
+  },
+  {
+    name: "Brasileirão Série B",
+    games: [
+      { name: "Athletic x São Bernardo", odds: [[2.2, 3.05, 3.25], [2.18, 3.1, 3.3], [2.22, 3.0, 3.28], [2.16, 3.12, 3.35], [2.24, 3.08, 3.2]] },
+      { name: "Cuiabá x Atlético-GO", odds: [[2.05, 3.15, 3.55], [2.08, 3.1, 3.5], [2.02, 3.2, 3.62], [2.1, 3.08, 3.48], [2.06, 3.18, 3.58]] },
+    ],
+  },
+  {
+    name: "Copa Sul-Americana",
+    games: [
+      { name: "Bolívar x Grêmio", odds: [[1.72, 4.1, 5.45], [1.73, 4.15, 5.4], [1.7, 4.2, 5.5], [1.75, 4.05, 5.35], [1.74, 4.12, 5.42]] },
+      { name: "Boca Juniors x O'Higgins", odds: [[1.45, 4.35, 7.2], [1.47, 4.3, 7.1], [1.46, 4.4, 7.0], [1.48, 4.25, 7.15], [1.44, 4.45, 7.25]] },
+    ],
+  },
+];
+
 const latestNews = [
   {
     category: "BRASILEIRÃO",
@@ -122,6 +165,8 @@ export default function Home() {
   const [cmsMode, setCmsMode] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [toast, setToast] = useState("");
+  const [championshipIndex, setChampionshipIndex] = useState(0);
+  const [fixtureIndex, setFixtureIndex] = useState(0);
 
   const rankedOperators = useMemo(
     () => [...operators].sort((a, b) => b.odds[market] - a.odds[market]),
@@ -129,6 +174,9 @@ export default function Home() {
   );
   const bestOdd = rankedOperators[0].odds[market];
   const possibleReturn = (stake * bestOdd).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  const selectedChampionship = championships[championshipIndex];
+  const selectedFixture = selectedChampionship.games[fixtureIndex];
+  const bestFixtureOdds = [0, 1, 2].map((column) => Math.max(...selectedFixture.odds.map((row) => row[column])));
 
   const demonstrate = (message: string) => {
     setToast(message);
@@ -183,28 +231,32 @@ export default function Home() {
       <section className="page-shell boost-section">
         <CmsTag>compHtml-multi-canais · 12 colunas</CmsTag>
         <div className="section-title">
-          <div><span className="kicker">OFERTA EM DESTAQUE</span><h2>Odd turbinada Jogo a Jogo</h2></div>
+          <div><span className="kicker">DUAS ESCOLHAS DIÁRIAS</span><h2>Bilhetes do dia</h2></div>
           <small>Atualizado há 2 min</small>
         </div>
-        <article className="boost-card">
-          <div className="boost-operator">
-            <OperatorLogo operator={operators[1]} />
-            <span>BOOST EXCLUSIVO</span>
-          </div>
-          <div className="boost-match">
-            <small>BRASILEIRÃO 2026</small>
-            <strong>Corinthians x Remo</strong>
-            <p>Corinthians vence + mais de 1,5 gols</p>
-          </div>
-          <div className="boost-price">
-            <span>ODD ORIGINAL <s>2.30</s></span>
-            <button onClick={() => demonstrate("Link demonstrativo para a bet365")}>ODD TURBINADA <b>2.70</b></button>
-          </div>
-          <div className="ad-warning">
-            <b>18+</b><span>Ministério da Fazenda adverte: Aposta não é investimento.</span>
-          </div>
-          <p className="operator-disclosure">Hillside (Brazil) Ltda. · CNPJ 47.123.407/0001-70 · Portaria SPA/MF nº 250/2025 · Aplicam-se termos e condições.</p>
-        </article>
+        <div className="tickets-grid">
+          {dailyTickets.map((ticket) => (
+            <article className="ticket-card" key={ticket.odd}>
+              <div className="ticket-head">
+                <OperatorLogo operator={operators[1]} />
+                <span>{ticket.badge}</span>
+              </div>
+              <div className="ticket-match">
+                <small>{ticket.league}</small>
+                <strong>{ticket.match}</strong>
+                <p>{ticket.selection}</p>
+              </div>
+              <div className="ticket-price">
+                <span>{ticket.profile}</span>
+                <button onClick={() => demonstrate("Bilhete demonstrativo da bet365")}>VER BILHETE <b>{ticket.odd}</b></button>
+              </div>
+              <div className="ad-warning">
+                <b>18+</b><span>Ministério da Fazenda adverte: Aposta não é investimento.</span>
+              </div>
+              <p className="operator-disclosure">Hillside (Brazil) Ltda. · CNPJ 47.123.407/0001-70 · Portaria SPA/MF nº 250/2025.</p>
+            </article>
+          ))}
+        </div>
       </section>
 
       <section className="page-shell" id="palpites">
@@ -278,12 +330,32 @@ export default function Home() {
           <p><span>Retorno bruto possível</span><strong>{possibleReturn}</strong></p>
           <small>Simulação informativa. Não representa garantia de ganho.</small>
         </article>
-        <article className="trend-widget">
-          <span className="kicker">MOVIMENTO DO MERCADO</span><h2>Odds em alta e queda</h2>
-          <div className="trend-row"><span>Corinthians vence</span><b>1.52</b><em>▼ 6,2%</em></div>
-          <div className="trend-row"><span>Ambas marcam</span><b>2.10</b><em className="up">▲ 3,8%</em></div>
-          <div className="trend-row"><span>Mais de 2,5 gols</span><b>1.78</b><em>▼ 2,1%</em></div>
-          <p>Variação baseada nas últimas atualizações do feed. Movimento de odd não é recomendação de aposta.</p>
+        <article className="game-compare-widget">
+          <span className="kicker">ESCOLHA O CAMPEONATO</span><h2>Compare por jogo</h2>
+          <div className="compare-selects">
+            <label>Campeonato
+              <select value={championshipIndex} onChange={(event) => { setChampionshipIndex(Number(event.target.value)); setFixtureIndex(0); }}>
+                {championships.map((championship, index) => <option value={index} key={championship.name}>{championship.name}</option>)}
+              </select>
+            </label>
+            <label>Jogo
+              <select value={fixtureIndex} onChange={(event) => setFixtureIndex(Number(event.target.value))}>
+                {selectedChampionship.games.map((game, index) => <option value={index} key={game.name}>{game.name}</option>)}
+              </select>
+            </label>
+          </div>
+          <div className="mini-odds-head"><span>Casa</span><b>1</b><b>X</b><b>2</b></div>
+          <div className="mini-odds-list">
+            {operators.map((operator, operatorIndex) => (
+              <div className="mini-odds-row" key={operator.name}>
+                <OperatorLogo operator={operator} />
+                {selectedFixture.odds[operatorIndex].map((odd, column) => (
+                  <b className={odd === bestFixtureOdds[column] ? "best" : ""} key={column}>{odd.toFixed(2)}</b>
+                ))}
+              </div>
+            ))}
+          </div>
+          <p>Melhores odds destacadas em verde. Dados ilustrativos com atualização via componenteAjax.</p>
         </article>
       </section>
 

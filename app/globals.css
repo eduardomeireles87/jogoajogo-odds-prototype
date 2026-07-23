@@ -48,7 +48,7 @@ main { min-height: 100vh; padding-bottom: 30px; }
 .page-shell { position: relative; padding-block: 50px; }
 .cms-tag { display: none; position: absolute; top: 8px; right: 0; z-index: 5; padding: 4px 7px; color: #735900; background: #fff5bf; border: 1px solid #ead36c; border-radius: 3px; font-size: 8px; font-weight: 700; }
 .cms-mode .cms-tag { display: inline-flex; }
-.cms-mode .page-shell, .cms-mode .boost-card, .cms-mode .pick-card, .cms-mode .calculator, .cms-mode .trend-widget { outline: 1px dashed #e2c858; outline-offset: -4px; }
+.cms-mode .page-shell, .cms-mode .ticket-card, .cms-mode .pick-card, .cms-mode .calculator, .cms-mode .game-compare-widget { outline: 1px dashed #e2c858; outline-offset: -4px; }
 .breadcrumb { color: #9ba29d; font-size: 10px; margin: 0 0 18px; }
 h1, h2, h3 { font-family: var(--font-space), Arial, sans-serif; }
 .intro { padding-top: 34px; }
@@ -73,16 +73,17 @@ h1, h2, h3 { font-family: var(--font-space), Arial, sans-serif; }
 .section-title > small, .section-title > a { color: var(--muted); font-size: 9px; }
 .section-title > a { color: var(--green-dark); font-weight: 800; text-transform: uppercase; }
 .kicker { color: var(--green-dark); font-size: 8px; letter-spacing: .12em; font-weight: 800; }
-.boost-card { position: relative; min-height: 190px; display: grid; grid-template-columns: .8fr 1.5fr 1fr; align-items: center; gap: 28px; padding: 25px 28px 56px; background: linear-gradient(100deg, #eef9f1, white); border: 1px solid #b8dfc5; border-radius: 9px; overflow: hidden; }
-.boost-operator { display: flex; flex-direction: column; align-items: start; gap: 12px; }
-.boost-operator > span:last-child { padding: 5px 8px; color: white; background: var(--green); border-radius: 3px; font-size: 8px; font-weight: 800; }
-.boost-match small { color: var(--green-dark); font-size: 8px; font-weight: 800; }
-.boost-match strong { display: block; margin-top: 6px; font-size: 19px; }
-.boost-match p { margin: 6px 0 0; color: var(--muted); font-size: 11px; }
-.boost-price { display: flex; flex-direction: column; gap: 8px; }
-.boost-price > span { color: var(--muted); font-size: 8px; }
-.boost-price button { padding: 12px; color: white; background: var(--green-dark); border: 0; border-radius: 5px; font-size: 10px; font-weight: 800; }
-.boost-price button b { margin-left: 8px; font-size: 19px; }
+.tickets-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.ticket-card { position: relative; min-height: 280px; display: flex; flex-direction: column; gap: 18px; padding: 22px 22px 57px; background: linear-gradient(120deg, #eef9f1, white); border: 1px solid #b8dfc5; border-radius: 9px; overflow: hidden; }
+.ticket-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.ticket-head > span:last-child { padding: 6px 8px; color: white; background: var(--green); border-radius: 3px; font-size: 8px; font-weight: 800; }
+.ticket-match small { color: var(--green-dark); font-size: 8px; font-weight: 800; }
+.ticket-match strong { display: block; margin-top: 7px; font-size: 17px; line-height: 1.25; }
+.ticket-match p { margin: 7px 0 0; color: var(--muted); font-size: 11px; }
+.ticket-price { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.ticket-price > span { color: var(--muted); font-size: 8px; font-weight: 700; }
+.ticket-price button { min-width: 190px; padding: 11px 13px; color: white; background: var(--green-dark); border: 0; border-radius: 5px; font-size: 9px; font-weight: 800; }
+.ticket-price button b { margin-left: 10px; font-size: 19px; }
 .ad-warning { position: absolute; inset: auto 0 22px; min-height: 27px; display: flex; align-items: center; justify-content: center; gap: 8px; color: white; background: #1c211d; font-size: 9px; }
 .ad-warning b { color: #c8f55c; }
 .operator-disclosure { position: absolute; inset: auto 12px 4px; margin: 0; color: #8b938d; font-size: 7px; text-align: center; }
@@ -139,9 +140,9 @@ h1, h2, h3 { font-family: var(--font-space), Arial, sans-serif; }
 .data-note { color: #8a918c; font-size: 8px; text-align: center; }
 
 .split-widgets { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.calculator, .trend-widget { position: relative; padding: 33px 25px 25px; border: 1px solid var(--line); border-radius: 7px; }
-.calculator::before, .trend-widget::before { content: ""; position: absolute; top: 18px; left: 25px; width: 72px; height: 4px; background: var(--green); }
-.calculator h2, .trend-widget h2 { margin: 8px 0 20px; color: var(--green); font-family: var(--font-montserrat), Arial, sans-serif; font-size: 21px; line-height: 1.1; font-weight: 300; text-transform: uppercase; }
+.calculator, .game-compare-widget { position: relative; padding: 33px 25px 25px; border: 1px solid var(--line); border-radius: 7px; }
+.calculator::before, .game-compare-widget::before { content: ""; position: absolute; top: 18px; left: 25px; width: 72px; height: 4px; background: var(--green); }
+.calculator h2, .game-compare-widget h2 { margin: 8px 0 20px; color: var(--green); font-family: var(--font-montserrat), Arial, sans-serif; font-size: 21px; line-height: 1.1; font-weight: 300; text-transform: uppercase; }
 .calculator label { display: block; margin-top: 12px; color: var(--muted); font-size: 8px; }
 .calculator label > div { height: 42px; margin-top: 5px; display: flex; align-items: center; background: white; border: 1px solid var(--line); border-radius: 4px; }
 .calculator label > div span { padding: 0 10px; }
@@ -151,10 +152,19 @@ h1, h2, h3 { font-family: var(--font-space), Arial, sans-serif; }
 .calculator > p span { color: var(--muted); font-size: 8px; }
 .calculator > p strong { color: var(--green-dark); font-size: 20px; }
 .calculator > small { color: #8c948e; font-size: 7px; }
-.trend-row { display: grid; grid-template-columns: 1fr auto auto; gap: 14px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); font-size: 10px; }
-.trend-row em { color: var(--green-dark); font-size: 8px; font-style: normal; }
-.trend-row em.up { color: #b94d32; }
-.trend-widget > p { color: #8a928c; font-size: 8px; line-height: 1.55; }
+.compare-selects { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 13px; }
+.compare-selects label { color: var(--muted); font-size: 7px; font-weight: 700; text-transform: uppercase; }
+.compare-selects select { width: 100%; height: 36px; margin-top: 5px; padding: 0 8px; color: var(--ink); background: white; border: 1px solid var(--line); border-radius: 4px; font-size: 9px; outline: none; }
+.compare-selects select:focus { border-color: var(--green); }
+.mini-odds-head, .mini-odds-row { display: grid; grid-template-columns: 1.6fr repeat(3, .55fr); align-items: center; gap: 7px; }
+.mini-odds-head { padding: 7px 8px; color: #828a84; background: #f4f6f4; font-size: 7px; text-align: center; }
+.mini-odds-head span { text-align: left; }
+.mini-odds-row { min-height: 42px; padding: 5px 8px; border-top: 1px solid var(--line); }
+.mini-odds-row .operator-logo { min-width: 78px; width: 78px; height: 28px; padding: 4px 7px; }
+.mini-odds-row .operator-logo img { max-width: 63px; max-height: 17px; }
+.mini-odds-row > b { padding: 6px 2px; color: #59615b; background: #f5f6f5; border-radius: 3px; font-size: 9px; text-align: center; }
+.mini-odds-row > b.best { color: white; background: var(--green); }
+.game-compare-widget > p { margin: 10px 0 0; color: #8a928c; font-size: 7px; line-height: 1.5; }
 
 .guides-band { background: #f4f6f4; border-block: 1px solid var(--line); }
 .guide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
@@ -266,8 +276,10 @@ h1, h2, h3 { font-family: var(--font-space), Arial, sans-serif; }
   .intro { padding-top: 27px; }
   .partner-strip { grid-template-columns: repeat(5, 125px); overflow-x: auto; }
   .partner-strip button { border-bottom: 0; }
-  .boost-card { grid-template-columns: 1fr; gap: 15px; padding: 20px 20px 62px; }
-  .boost-price { align-items: stretch; }
+  .tickets-grid { grid-template-columns: 1fr; }
+  .ticket-card { min-height: 270px; padding: 20px 20px 62px; }
+  .ticket-price { align-items: stretch; flex-direction: column; }
+  .ticket-price button { width: 100%; min-width: 0; }
   .picks-grid { grid-template-columns: 1fr; }
   .picks-grid article:last-child { grid-column: auto; }
   .section-title { align-items: start; }
