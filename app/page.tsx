@@ -5,356 +5,264 @@ import { useMemo, useState } from "react";
 type Operator = {
   name: string;
   key: string;
-  color: string;
   cnpj: string;
   portaria: string;
   odds: [number, number, number];
-  score: string;
+  accent: string;
 };
 
 const operators: Operator[] = [
-  {
-    name: "Superbet",
-    key: "superbet",
-    color: "#ec1b24",
-    cnpj: "54.071.596/0001-40",
-    portaria: "SPA/MF nº 2.090/2024",
-    odds: [1.62, 4.2, 5.8],
-    score: "4,8",
-  },
-  {
-    name: "bet365",
-    key: "bet365",
-    color: "#007b5b",
-    cnpj: "47.123.407/0001-70",
-    portaria: "SPA/MF nº 250/2025",
-    odds: [1.6, 4.33, 6.0],
-    score: "4,7",
-  },
-  {
-    name: "Betano",
-    key: "betano",
-    color: "#f36c21",
-    cnpj: "46.786.961/0001-74",
-    portaria: "SPA/MF nº 246/2025",
-    odds: [1.65, 4.1, 5.75],
-    score: "4,8",
-  },
+  { name: "7K", key: "seven", cnpj: "55.933.850/0001-34", portaria: "SPA/MF nº 322/2025", odds: [1.57, 4.15, 6.75], accent: "#f5a800" },
+  { name: "Superbet", key: "superbet", cnpj: "54.071.596/0001-40", portaria: "SPA/MF nº 2.090/2024", odds: [1.59, 4.05, 6.8], accent: "#ed1c24" },
+  { name: "Betnacional", key: "betnacional", cnpj: "55.056.104/0001-00", portaria: "SPA/MF nº 2.092/2024", odds: [1.6, 4.2, 6.7], accent: "#006f44" },
+  { name: "bet365", key: "bet365", cnpj: "47.123.407/0001-70", portaria: "SPA/MF nº 250/2025", odds: [1.58, 4.1, 6.9], accent: "#087b5d" },
+  { name: "Novibet", key: "novibet", cnpj: "50.587.712/0001-27", portaria: "SPA/MF nº 249/2025", odds: [1.62, 4.0, 6.65], accent: "#26348a" },
 ];
 
-const matches = [
-  { league: "Brasileirão Série A", home: "Corinthians", away: "Remo", time: "Hoje • 22:30", homeCode: "COR", awayCode: "REM", odds: [1.52, 4.1, 6.9] },
-  { league: "Brasileirão Série A", home: "Flamengo", away: "Palmeiras", time: "Amanhã • 19:00", homeCode: "FLA", awayCode: "PAL", odds: [2.15, 3.25, 3.4] },
-  { league: "Copa do Mundo", home: "Brasil", away: "Marrocos", time: "Sáb • 16:00", homeCode: "BRA", awayCode: "MAR", odds: [1.72, 3.7, 5.1] },
+const picks = [
+  { sport: "Futebol", league: "Brasileirão 2026", home: "Botafogo", away: "Vitória", homeCode: "BOT", awayCode: "VIT", time: "Hoje • 23:30", odds: [1.76, 3.7, 5.0], verified: "Botafogo / Empate", verifiedOdd: "1.15", operator: "Novibet" },
+  { sport: "Futebol", league: "Brasileirão 2026", home: "Corinthians", away: "Remo", homeCode: "COR", awayCode: "REM", time: "Hoje • 23:30", odds: [1.52, 4.1, 6.9], verified: "Ambas marcam — Sim", verifiedOdd: "2.10", operator: "Novibet" },
+  { sport: "Futebol", league: "Copa Sul-Americana", home: "Bolívar", away: "Grêmio", homeCode: "BOL", awayCode: "GRE", time: "Hoje • 23:00", odds: [1.73, 4.15, 5.4], verified: "Mais de 2,5 gols", verifiedOdd: "1.78", operator: "bet365" },
 ];
 
-const leagues = [
-  ["BR", "Brasileirão Série A", "10 jogos"],
-  ["CM", "Copa do Mundo", "8 jogos"],
-  ["CL", "Libertadores", "6 jogos"],
-  ["PL", "Premier League", "7 jogos"],
-  ["CH", "Champions League", "4 jogos"],
-];
+const legalText = (operator: Operator) =>
+  `${operator.name} — CNPJ ${operator.cnpj} · ${operator.portaria}`;
 
-const trendData = [
-  { label: "09h", value: 42 },
-  { label: "11h", value: 54 },
-  { label: "13h", value: 47 },
-  { label: "15h", value: 67 },
-  { label: "17h", value: 74 },
-  { label: "Agora", value: 86 },
-];
-
-function TeamMark({ code, dark = false }: { code: string; dark?: boolean }) {
-  return <span className={`team-mark ${dark ? "dark" : ""}`}>{code}</span>;
+function Team({ code, name }: { code: string; name: string }) {
+  return <div className="team"><span>{code}</span><strong>{name}</strong></div>;
 }
 
-function OperatorLogo({ item }: { item: Operator }) {
-  return (
-    <span className={`operator-logo ${item.key}`} style={{ "--operator": item.color } as React.CSSProperties}>
-      {item.name}
-    </span>
-  );
+function OperatorName({ operator }: { operator: Operator }) {
+  return <span className={`operator-name ${operator.key}`} style={{ "--accent": operator.accent } as React.CSSProperties}>{operator.name}</span>;
+}
+
+function CmsTag({ children }: { children: React.ReactNode }) {
+  return <span className="cms-tag">{children}</span>;
 }
 
 export default function Home() {
   const [market, setMarket] = useState(0);
-  const [selectedMatch, setSelectedMatch] = useState(0);
   const [stake, setStake] = useState(50);
-  const [slipOpen, setSlipOpen] = useState(false);
-  const [mobileMenu, setMobileMenu] = useState(false);
+  const [cmsMode, setCmsMode] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [toast, setToast] = useState("");
 
-  const bestOdd = useMemo(
-    () => Math.max(...operators.map((operator) => operator.odds[market])),
+  const rankedOperators = useMemo(
+    () => [...operators].sort((a, b) => b.odds[market] - a.odds[market]),
     [market],
   );
-  const possibleReturn = (stake * bestOdd).toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  });
+  const bestOdd = rankedOperators[0].odds[market];
+  const possibleReturn = (stake * bestOdd).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
-  const pickOdd = (index: number) => {
-    setMarket(index);
-    setSlipOpen(true);
+  const demonstrate = (message: string) => {
+    setToast(message);
+    window.setTimeout(() => setToast(""), 2200);
   };
 
   return (
-    <main>
-      <div className="legal-rail">
-        <strong>18+</strong>
+    <main className={cmsMode ? "cms-mode" : ""}>
+      <div className="legal-top">
+        <b>18+</b>
         <span>MINISTÉRIO DA FAZENDA ADVERTE: APOSTA NÃO É INVESTIMENTO</span>
-        <span className="legal-wide">• Jogue com responsabilidade • Odds e dados ilustrativos neste protótipo</span>
-      </div>
-      <div className="regulatory-dock" aria-label="Identificação dos operadores exibidos">
-        <strong>OPERADORES EXIBIDOS</strong>
-        <span>Superbet — CNPJ 54.071.596/0001-40 · SPA/MF 2.090/2024</span>
-        <span>bet365 — CNPJ 47.123.407/0001-70 · SPA/MF 250/2025</span>
-        <span>Betano — CNPJ 46.786.961/0001-74 · SPA/MF 246/2025</span>
+        <span className="desktop-legal">• Jogue com responsabilidade</span>
       </div>
 
-      <header className="site-header">
-        <a className="brand" href="#top" aria-label="Jogo a Jogo — início">
-          <span>JOGO</span><i>A</i><span>JOGO</span>
-        </a>
-        <nav className={mobileMenu ? "open" : ""}>
-          <a href="#jogos">Jogos</a>
-          <a href="#comparador">Comparador</a>
-          <a href="#tendencias">Tendências</a>
-          <a href="#operadores">Operadores</a>
-          <a href="#responsavel">Jogo responsável</a>
-        </nav>
-        <button className="menu-button" onClick={() => setMobileMenu(!mobileMenu)} aria-label="Abrir menu">☰</button>
-        <button className="header-cta" onClick={() => document.querySelector("#comparador")?.scrollIntoView({ behavior: "smooth" })}>
-          Comparar odds
-        </button>
+      <div className="ig-network">
+        <div className="ig-network-inner">
+          <a className="ig-mark" href="https://www.ig.com.br" aria-label="Portal iG">iG</a>
+          <nav>
+            <a href="#">último segundo</a><a href="#">economia</a><a href="#">gente</a><a href="#">esporte</a><a href="#">carros</a><a href="#">pets</a><a href="#">receitas</a>
+          </nav>
+          <span>Buscar</span>
+        </div>
+      </div>
+
+      <header className="jj-header">
+        <div className="jj-header-inner">
+          <a href="#inicio"><img src="/jogoajogo-logo.png" alt="Jogo a Jogo" /></a>
+          <button className="mobile-menu" onClick={() => setMenuOpen(!menuOpen)}>Menu</button>
+          <nav className={menuOpen ? "open" : ""}>
+            <a href="#palpites">Palpites</a>
+            <a href="#comparador">Odds</a>
+            <a href="#operadores">Casas de apostas</a>
+            <a href="#guias">Guia para apostas</a>
+            <a href="#responsavel">Jogo responsável</a>
+          </nav>
+          <button className="cms-toggle" onClick={() => setCmsMode(!cmsMode)}>{cmsMode ? "Ocultar estrutura" : "Ver estrutura CMS"}</button>
+        </div>
       </header>
 
-      <section className="hero" id="top">
-        <div className="pitch-lines" aria-hidden="true" />
-        <div className="hero-glow" aria-hidden="true" />
-        <div className="hero-content">
-          <span className="eyebrow light">DADOS, CONTEXTO, MELHORES ESCOLHAS</span>
-          <h1>O jogo começa<br />antes do apito.</h1>
-          <p>Compare odds em tempo real, entenda o movimento do mercado e encontre operadores autorizados — tudo em um só lugar.</p>
-          <div className="hero-actions">
-            <a className="button primary" href="#jogos">Ver jogos de hoje <span>↘</span></a>
-            <a className="button ghost" href="#como-funciona">Como funciona</a>
-          </div>
-          <div className="hero-stats">
-            <div><strong>38</strong><span>jogos hoje</span></div>
-            <div><strong>3</strong><span>operadores comparados</span></div>
-            <div><strong>2 min</strong><span>atualização das odds</span></div>
-          </div>
-        </div>
-        <div className="live-panel">
-          <div className="live-head"><span><i /> AO VIVO</span><small>Odds atualizadas agora</small></div>
-          <div className="live-match">
-            <div className="club"><TeamMark code="FLA" dark /><span>Flamengo</span></div>
-            <strong className="score">1 <em>68&apos;</em> 1</strong>
-            <div className="club"><TeamMark code="PAL" dark /><span>Palmeiras</span></div>
-          </div>
-          <div className="live-odds">
-            <button onClick={() => pickOdd(0)}><span>Casa</span><strong>2.75</strong></button>
-            <button onClick={() => pickOdd(1)}><span>Empate</span><strong>2.20</strong></button>
-            <button onClick={() => pickOdd(2)}><span>Fora</span><strong>3.80</strong></button>
-          </div>
-          <p className="mini-warning">18+ • Apostar pode causar dependência.</p>
+      <div className="ad-space"><span>PUBLICIDADE</span><div>970 × 90</div></div>
+
+      <section className="page-shell intro" id="inicio">
+        <CmsTag>faixaLimpa · 12 colunas</CmsTag>
+        <p className="breadcrumb">iG › Esporte › Jogo a Jogo</p>
+        <h1>Dicas de apostas e melhores odds</h1>
+        <p className="intro-copy">Compare as casas parceiras do Jogo a Jogo, veja os palpites do dia e encontre oportunidades em operadores autorizados.</p>
+        <div className="partner-strip">
+          {operators.map((operator) => <button key={operator.name} onClick={() => document.querySelector("#operadores")?.scrollIntoView({ behavior: "smooth" })}><OperatorName operator={operator} /></button>)}
         </div>
       </section>
 
-      <section className="quick-nav">
-        {leagues.map(([code, name, count]) => (
-          <button key={name}>
-            <span>{code}</span>
-            <span><strong>{name}</strong><small>{count}</small></span>
-            <b>›</b>
-          </button>
-        ))}
+      <section className="page-shell boost-section">
+        <CmsTag>compHtml-multi-canais · 12 colunas</CmsTag>
+        <div className="section-title">
+          <div><span className="kicker">OFERTA EM DESTAQUE</span><h2>Odd turbinada Jogo a Jogo</h2></div>
+          <small>Atualizado há 2 min</small>
+        </div>
+        <article className="boost-card">
+          <div className="boost-operator">
+            <OperatorName operator={operators[2]} />
+            <span>BOOST EXCLUSIVO</span>
+          </div>
+          <div className="boost-match">
+            <small>BRASILEIRÃO 2026</small>
+            <strong>Corinthians x Remo</strong>
+            <p>Corinthians vence + mais de 1,5 gols</p>
+          </div>
+          <div className="boost-price">
+            <span>ODD ORIGINAL <s>2.30</s></span>
+            <button onClick={() => demonstrate("Link demonstrativo para a Betnacional")}>ODD TURBINADA <b>2.70</b></button>
+          </div>
+          <div className="ad-warning">
+            <b>18+</b><span>Ministério da Fazenda adverte: Aposta não é investimento.</span>
+          </div>
+          <p className="operator-disclosure">NSX Brasil S.A. · CNPJ 55.056.104/0001-00 · Portaria SPA/MF nº 2.092/2024 · Aplicam-se termos e condições.</p>
+        </article>
       </section>
 
-      <section className="section games-section" id="jogos">
-        <div className="section-heading">
-          <div>
-            <span className="eyebrow">PLACAR E MERCADO</span>
-            <h2>Jogos em destaque</h2>
-          </div>
-          <div className="date-switch"><button>‹</button><span>Hoje, 23 jul</span><button>›</button></div>
+      <section className="page-shell" id="palpites">
+        <CmsTag>faixa · 3 × col-sm-4</CmsTag>
+        <div className="section-title">
+          <div><span className="kicker">JOGOS DE HOJE</span><h2>Palpites</h2></div>
+          <a href="#">Ver todos</a>
         </div>
-        <div className="games-grid">
-          {matches.map((match, index) => (
-            <article className={`match-card ${selectedMatch === index ? "selected" : ""}`} key={`${match.home}-${match.away}`}>
-              <div className="match-top">
-                <span>{match.league}</span><small>{match.time}</small>
+        <div className="filter-row">
+          <button className="active">Todos</button><button>Futebol</button><button>Brasileirão</button><button>Copa do Mundo</button>
+        </div>
+        <div className="picks-grid">
+          {picks.map((pick) => (
+            <article className="pick-card" key={`${pick.home}-${pick.away}`}>
+              <div className="pick-meta"><span>{pick.sport}</span><small>{pick.league}</small></div>
+              <div className="pick-match">
+                <Team code={pick.homeCode} name={pick.home} />
+                <div><small>{pick.time}</small><b>VS</b></div>
+                <Team code={pick.awayCode} name={pick.away} />
               </div>
-              <div className="match-clubs">
-                <div><TeamMark code={match.homeCode} /><strong>{match.home}</strong></div>
-                <span>VS</span>
-                <div><TeamMark code={match.awayCode} /><strong>{match.away}</strong></div>
+              <div className="pick-odds">
+                {pick.odds.map((odd, index) => <button key={index} onClick={() => setMarket(index)}><span>{["1", "X", "2"][index]}</span><b>{odd.toFixed(2)}</b></button>)}
               </div>
-              <div className="three-odds">
-                {match.odds.map((odd, oddIndex) => (
-                  <button key={oddIndex} onClick={() => { setSelectedMatch(index); pickOdd(oddIndex); }}>
-                    <small>{["1", "X", "2"][oddIndex]}</small><strong>{odd.toFixed(2)}</strong>
-                  </button>
-                ))}
+              <div className="verified-pick">
+                <span>✓ ODD VERIFICADA</span>
+                <strong>{pick.operator}</strong>
+                <p>{pick.verified} <b>{pick.verifiedOdd}</b></p>
               </div>
-              <button className="compare-link" onClick={() => { setSelectedMatch(index); document.querySelector("#comparador")?.scrollIntoView({ behavior: "smooth" }); }}>
-                Comparar todas as casas <span>→</span>
-              </button>
+              <button className="pick-cta" onClick={() => demonstrate("Palpite aberto no protótipo")}>Ver palpite</button>
+              <p className="card-legal">18+ • Ministério da Fazenda adverte: Aposta não é investimento.</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="comparator-wrap" id="comparador">
-        <div className="section comparator">
-          <div className="comparator-title">
-            <div>
-              <span className="eyebrow light">COMPARADOR JOGO A JOGO</span>
-              <h2>Uma partida. Todas as odds.</h2>
-            </div>
-            <span className="update"><i /> Atualizado há 18s</span>
-          </div>
+      <div className="ad-space compact"><span>PUBLICIDADE</span><div>728 × 90</div></div>
 
-          <div className="selected-game">
-            <div><TeamMark code={matches[selectedMatch].homeCode} dark /><strong>{matches[selectedMatch].home}</strong></div>
-            <span><small>{matches[selectedMatch].time}</small><b>×</b></span>
-            <div><TeamMark code={matches[selectedMatch].awayCode} dark /><strong>{matches[selectedMatch].away}</strong></div>
-          </div>
-
-          <div className="market-tabs" role="tablist" aria-label="Mercado">
-            {["Vitória casa · 1", "Empate · X", "Vitória fora · 2"].map((label, index) => (
-              <button className={market === index ? "active" : ""} onClick={() => setMarket(index)} key={label}>{label}</button>
-            ))}
-          </div>
-
-          <div className="operator-table">
-            <div className="operator-row table-head">
-              <span>Operador autorizado</span><span>Odd</span><span>Variação</span><span />
-            </div>
-            {[...operators].sort((a, b) => b.odds[market] - a.odds[market]).map((operator) => {
-              const isBest = operator.odds[market] === bestOdd;
-              return (
-                <div className={`operator-row ${isBest ? "best" : ""}`} key={operator.name}>
-                  <div className="operator-id">
-                    <OperatorLogo item={operator} />
-                    <span><strong>{operator.name}</strong><small>★ {operator.score} • verificado</small></span>
-                  </div>
-                  <div className="odd-value"><strong>{operator.odds[market].toFixed(2)}</strong>{isBest && <small>Melhor odd</small>}</div>
-                  <span className="variation">↗ +{(1.2 + operator.odds[market] / 10).toFixed(1)}%</span>
-                  <button className="bet-button" onClick={() => setSlipOpen(true)}>Ir para a casa ↗</button>
-                  <div className="operator-legal">
-                    <strong>18+</strong> Ministério da Fazenda adverte: Aposta não é investimento. • CNPJ {operator.cnpj} • {operator.portaria}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <p className="method-note">Odds ilustrativas para validação do layout. Em produção, o feed deve registrar horário da última atualização, origem e condições do mercado.</p>
+      <section className="page-shell comparator-section" id="comparador">
+        <CmsTag>componenteAjax · 12 colunas</CmsTag>
+        <div className="section-title">
+          <div><span className="kicker">WIDGET AJAX</span><h2>Compare as odds</h2></div>
+          <small><i /> Atualização automática</small>
         </div>
+        <div className="event-summary">
+          <Team code="COR" name="Corinthians" /><div><span>HOJE • 23:30</span><b>×</b><small>Brasileirão Série A</small></div><Team code="REM" name="Remo" />
+        </div>
+        <div className="market-switch">
+          {["Vitória Corinthians · 1", "Empate · X", "Vitória Remo · 2"].map((item, index) => <button className={market === index ? "active" : ""} onClick={() => setMarket(index)} key={item}>{item}</button>)}
+        </div>
+        <div className="odds-table">
+          <div className="odds-head"><span>Casa de apostas</span><span>Odd</span><span>Retorno estimado</span><span /></div>
+          {rankedOperators.map((operator, index) => (
+            <div className="odds-row" key={operator.name}>
+              <div><OperatorName operator={operator} /><small>{index === 0 ? "Melhor odd" : "Operador autorizado"}</small></div>
+              <strong>{operator.odds[market].toFixed(2)}</strong>
+              <span>{(100 * operator.odds[market]).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span>
+              <button onClick={() => demonstrate(`Link demonstrativo para ${operator.name}`)}>Apostar ↗</button>
+              <p><b>18+</b> Ministério da Fazenda adverte: Aposta não é investimento. • {legalText(operator)}</p>
+            </div>
+          ))}
+        </div>
+        <p className="data-note">Odds ilustrativas. Em produção, este bloco pode ser alimentado pelo componenteAjax do publicador, sem alterar a estrutura da home.</p>
       </section>
 
-      <section className="section insight-grid" id="tendencias">
-        <article className="trend-card">
-          <span className="eyebrow">INTELIGÊNCIA DE MERCADO</span>
-          <h2>Para onde a odd está indo?</h2>
-          <p>Veja a pressão do mercado nas últimas horas antes de tomar uma decisão.</p>
-          <div className="trend-legend"><span><i /> Vitória Corinthians</span><strong>1.52 <small>▼ 8,4%</small></strong></div>
-          <div className="bar-chart">
-            {trendData.map((item) => <div key={item.label}><span style={{ height: `${item.value}%` }} /><small>{item.label}</small></div>)}
-          </div>
-          <div className="insight"><b>↓</b><span><strong>Odd em queda</strong>Mais apostas estão entrando neste mercado. Compare antes do movimento fechar.</span></div>
+      <section className="page-shell split-widgets">
+        <CmsTag>faixa · 2 × col-sm-6</CmsTag>
+        <article className="calculator">
+          <span className="kicker">FERRAMENTA</span><h2>Calculadora de retorno</h2>
+          <label>Valor da aposta<div><span>R$</span><input type="number" min="1" value={stake} onChange={(event) => setStake(Number(event.target.value))} /></div></label>
+          <label>Melhor odd<div className="fixed-value">{bestOdd.toFixed(2)}</div></label>
+          <p><span>Retorno bruto possível</span><strong>{possibleReturn}</strong></p>
+          <small>Simulação informativa. Não representa garantia de ganho.</small>
         </article>
-        <article className="calculator-card">
-          <span className="eyebrow light">CALCULADORA RÁPIDA</span>
-          <h2>Simule, antes de apostar.</h2>
-          <p>A ferramenta calcula o retorno bruto possível — não é recomendação nem garantia de ganho.</p>
-          <label>Valor da aposta
-            <div className="input-wrap"><span>R$</span><input type="number" min="1" value={stake} onChange={(event) => setStake(Number(event.target.value))} /></div>
-          </label>
-          <label>Melhor odd encontrada
-            <div className="calculated-odd">{bestOdd.toFixed(2)} <small>no comparador</small></div>
-          </label>
-          <div className="return-box"><span>Retorno bruto possível</span><strong>{possibleReturn}</strong><small>Lucro potencial: {(stake * bestOdd - stake).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</small></div>
-          <button onClick={() => setSlipOpen(true)}>Adicionar ao cupom demonstrativo</button>
-          <p className="mini-warning">18+ • Apostar pode causar dependência • Defina limites.</p>
+        <article className="trend-widget">
+          <span className="kicker">MOVIMENTO DO MERCADO</span><h2>Odds em alta e queda</h2>
+          <div className="trend-row"><span>Corinthians vence</span><b>1.52</b><em>▼ 6,2%</em></div>
+          <div className="trend-row"><span>Ambas marcam</span><b>2.10</b><em className="up">▲ 3,8%</em></div>
+          <div className="trend-row"><span>Mais de 2,5 gols</span><b>1.78</b><em>▼ 2,1%</em></div>
+          <p>Variação baseada nas últimas atualizações do feed. Movimento de odd não é recomendação de aposta.</p>
         </article>
       </section>
 
-      <section className="dark-band">
-        <div className="section">
-          <div className="section-heading light-heading">
-            <div><span className="eyebrow light">LEITURA RÁPIDA</span><h2>O mercado, sem ruído.</h2></div>
-            <p>Blocos curtos que o builder do iG pode receber via HTML e feed de dados.</p>
-          </div>
-          <div className="signal-grid">
-            <article><span className="signal-icon">↘</span><small>ODD EM QUEDA</small><strong>Flamengo para vencer</strong><p>De 2.30 para 2.15 nas últimas 3 horas.</p><b>Alta movimentação</b></article>
-            <article><span className="signal-icon">◎</span><small>MERCADO POPULAR</small><strong>Ambas marcam</strong><p>62% das seleções neste confronto estão neste mercado.</p><b>4 operadores</b></article>
-            <article><span className="signal-icon">≋</span><small>DIVERGÊNCIA</small><strong>Diferença de 7,8%</strong><p>A maior distância entre casas está na vitória visitante.</p><b>Vale comparar</b></article>
+      <section className="guides-band" id="guias">
+        <div className="page-shell">
+          <CmsTag>faixaTemas · 3 × col-sm-4</CmsTag>
+          <div className="section-title"><div><span className="kicker">CONTEÚDO DE SERVIÇO</span><h2>Guia para apostas</h2></div><a href="#">Ver todos</a></div>
+          <div className="guide-grid">
+            <article><span>01</span><small>GUIA</small><h3>Como comparar odds entre diferentes casas</h3><a href="#">Ler guia →</a></article>
+            <article><span>02</span><small>EXPLICADOR</small><h3>O que significa 1, X e 2 nas apostas</h3><a href="#">Ler guia →</a></article>
+            <article><span>03</span><small>JOGO RESPONSÁVEL</small><h3>Como definir limites antes de começar</h3><a href="#">Ler guia →</a></article>
           </div>
         </div>
       </section>
 
-      <section className="section operators-section" id="operadores">
-        <div className="section-heading">
-          <div><span className="eyebrow">TRANSPARÊNCIA</span><h2>Operadores autorizados</h2></div>
-          <a href="https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas" target="_blank" rel="noreferrer">Consultar lista oficial ↗</a>
-        </div>
-        <div className="review-grid">
-          {operators.map((operator, index) => (
+      <section className="page-shell operators" id="operadores">
+        <CmsTag>componenteAjax-cupom · 5 cards</CmsTag>
+        <div className="section-title"><div><span className="kicker">PARCEIROS CONTRATADOS</span><h2>Casas de apostas</h2></div></div>
+        <div className="operator-grid">
+          {operators.map((operator) => (
             <article key={operator.name}>
-              <div className="review-head"><OperatorLogo item={operator} /><span>★ {operator.score}</span></div>
-              <h3>{["Melhor variedade de mercados", "Experiência mais completa", "Navegação rápida e clara"][index]}</h3>
-              <ul><li>Domínio oficial .bet.br</li><li>Dados regulatórios visíveis</li><li>Ferramentas de jogo responsável</li></ul>
-              <div className="review-legal"><strong>CNPJ {operator.cnpj}</strong><span>Autorização {operator.portaria}</span></div>
-              <button>Ver análise completa</button>
-              <p>18+ • Ministério da Fazenda adverte: Apostar pode causar dependência.</p>
+              <OperatorName operator={operator} />
+              <span className="authorized">✓ Autorizada</span>
+              <p><strong>CNPJ</strong>{operator.cnpj}</p>
+              <p><strong>Autorização</strong>{operator.portaria}</p>
+              <button onClick={() => demonstrate(`Review de ${operator.name}`)}>Ver análise</button>
+              <small>18+ • Apostar pode causar dependência.</small>
             </article>
           ))}
         </div>
       </section>
 
       <section className="responsible" id="responsavel">
-        <div className="responsible-copy">
-          <span className="age-mark">18+</span>
-          <div><span className="eyebrow light">JOGO RESPONSÁVEL</span><h2>Informação também é proteção.</h2><p>Apostas são entretenimento com risco financeiro. Nunca use dinheiro de gastos essenciais e não tente recuperar perdas.</p></div>
-        </div>
-        <div className="responsible-actions">
-          <a href="https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas/jogo-responsavel" target="_blank" rel="noreferrer">Orientações oficiais ↗</a>
-          <a href="https://www.gov.br/autoexclusaoapostas" target="_blank" rel="noreferrer">Autoexclusão centralizada ↗</a>
-        </div>
-      </section>
-
-      <section className="section how" id="como-funciona">
-        <span className="eyebrow">PROPOSTA PARA O BUILDER iG</span>
-        <h2>Uma arquitetura simples de publicar.</h2>
-        <div className="steps">
-          <div><b>01</b><strong>Feed único</strong><p>Partidas, horários e odds entram por um JSON controlado.</p></div>
-          <div><b>02</b><strong>Widgets modulares</strong><p>Cada seção funciona como bloco HTML independente no builder.</p></div>
-          <div><b>03</b><strong>Camada legal</strong><p>Aviso fixo global e dados do operador acoplados a cada CTA.</p></div>
-          <div><b>04</b><strong>Medição</strong><p>Cliques por jogo, mercado, operadora e posição do widget.</p></div>
+        <div className="page-shell responsible-inner">
+          <b>18+</b>
+          <div><span className="kicker">JOGO RESPONSÁVEL</span><h2>Aposta é entretenimento, não investimento.</h2><p>Não use dinheiro de gastos essenciais e nunca tente recuperar perdas. Se precisar, utilize a plataforma centralizada de autoexclusão.</p></div>
+          <a href="https://www.gov.br/autoexclusaoapostas" target="_blank" rel="noreferrer">Acessar autoexclusão ↗</a>
         </div>
       </section>
 
       <footer>
-        <div className="footer-top"><a className="brand" href="#top"><span>JOGO</span><i>A</i><span>JOGO</span></a><p>Odds, contexto e escolhas mais informadas.</p></div>
-        <div className="footer-grid">
-          <div><strong>Produto</strong><a href="#jogos">Jogos de hoje</a><a href="#comparador">Comparador</a><a href="#tendencias">Tendências</a></div>
-          <div><strong>Confiança</strong><a href="#operadores">Operadores</a><a href="#responsavel">Jogo responsável</a><a href="https://www.gov.br/autoexclusaoapostas">Autoexclusão</a></div>
-          <div><strong>Importante</strong><p>Este protótipo não recebe apostas. Odds exibidas são ilustrativas. Links externos devem apontar apenas para operadores autorizados.</p></div>
+        <div className="page-shell footer-inner">
+          <img src="/jogoajogo-logo.png" alt="Jogo a Jogo" />
+          <div><strong>Produto</strong><a href="#palpites">Palpites</a><a href="#comparador">Comparador</a><a href="#operadores">Casas parceiras</a></div>
+          <div><strong>Informação</strong><a href="#guias">Guia para apostas</a><a href="#responsavel">Jogo responsável</a></div>
+          <p>Protótipo para validação interna. Odds ilustrativas e nenhum fluxo realiza apostas.</p>
         </div>
-        <div className="footer-warning"><b>18+</b><span><strong>MINISTÉRIO DA FAZENDA ADVERTE: APOSTAR PODE CAUSAR DEPENDÊNCIA.</strong> Aposta não é investimento. Jogue com responsabilidade.</span></div>
-        <small>© 2026 Jogo a Jogo — protótipo de produto para validação interna.</small>
       </footer>
 
-      <aside className={`bet-slip ${slipOpen ? "open" : ""}`} aria-live="polite">
-        <button className="slip-close" onClick={() => setSlipOpen(false)}>×</button>
-        <span className="eyebrow">CUPOM DEMONSTRATIVO</span>
-        <strong>{matches[selectedMatch].home} × {matches[selectedMatch].away}</strong>
-        <p>{["Vitória casa", "Empate", "Vitória fora"][market]} <b>{bestOdd.toFixed(2)}</b></p>
-        <small>Não é possível apostar neste protótipo.</small>
-        <button className="slip-action" onClick={() => document.querySelector("#comparador")?.scrollIntoView({ behavior: "smooth" })}>Ver comparação</button>
-      </aside>
+      <div className="regulatory-dock">
+        <strong>18+ • OPERADORES EXIBIDOS</strong>
+        {operators.map((operator) => <span key={operator.name}>{operator.name}: CNPJ {operator.cnpj} · {operator.portaria}</span>)}
+      </div>
+
+      {toast && <div className="toast">{toast}</div>}
     </main>
   );
 }
