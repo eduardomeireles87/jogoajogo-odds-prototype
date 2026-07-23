@@ -5,18 +5,19 @@ import { useMemo, useState } from "react";
 type Operator = {
   name: string;
   key: string;
+  logo: string;
+  surface: string;
   cnpj: string;
   portaria: string;
   odds: [number, number, number];
-  accent: string;
 };
 
 const operators: Operator[] = [
-  { name: "7K", key: "seven", cnpj: "55.933.850/0001-34", portaria: "SPA/MF nº 322/2025", odds: [1.57, 4.15, 6.75], accent: "#f5a800" },
-  { name: "Superbet", key: "superbet", cnpj: "54.071.596/0001-40", portaria: "SPA/MF nº 2.090/2024", odds: [1.59, 4.05, 6.8], accent: "#ed1c24" },
-  { name: "Betnacional", key: "betnacional", cnpj: "55.056.104/0001-00", portaria: "SPA/MF nº 2.092/2024", odds: [1.6, 4.2, 6.7], accent: "#006f44" },
-  { name: "bet365", key: "bet365", cnpj: "47.123.407/0001-70", portaria: "SPA/MF nº 250/2025", odds: [1.58, 4.1, 6.9], accent: "#087b5d" },
-  { name: "Novibet", key: "novibet", cnpj: "50.587.712/0001-27", portaria: "SPA/MF nº 249/2025", odds: [1.62, 4.0, 6.65], accent: "#26348a" },
+  { name: "7K", key: "seven", logo: "7kbet.svg", surface: "#171b18", cnpj: "55.933.850/0001-34", portaria: "SPA/MF nº 322/2025", odds: [1.57, 4.15, 6.75] },
+  { name: "bet365", key: "bet365", logo: "bet365.webp", surface: "#087b5d", cnpj: "47.123.407/0001-70", portaria: "SPA/MF nº 250/2025", odds: [1.58, 4.1, 6.9] },
+  { name: "Superbet", key: "superbet", logo: "superbet.webp", surface: "#ed1c24", cnpj: "54.071.596/0001-40", portaria: "SPA/MF nº 2.090/2024", odds: [1.59, 4.05, 6.8] },
+  { name: "Betnacional", key: "betnacional", logo: "betnacional.webp", surface: "#006f44", cnpj: "55.056.104/0001-00", portaria: "SPA/MF nº 2.092/2024", odds: [1.6, 4.2, 6.7] },
+  { name: "Novibet", key: "novibet", logo: "novibet.webp", surface: "#26348a", cnpj: "50.587.712/0001-27", portaria: "SPA/MF nº 249/2025", odds: [1.62, 4.0, 6.65] },
 ];
 
 const picks = [
@@ -103,8 +104,12 @@ function Team({ code, name }: { code: string; name: string }) {
   return <div className="team"><span>{code}</span><strong>{name}</strong></div>;
 }
 
-function OperatorName({ operator }: { operator: Operator }) {
-  return <span className={`operator-name ${operator.key}`} style={{ "--accent": operator.accent } as React.CSSProperties}>{operator.name}</span>;
+function OperatorLogo({ operator }: { operator: Operator }) {
+  return (
+    <span className={`operator-logo ${operator.key}`} style={{ "--surface": operator.surface } as React.CSSProperties}>
+      <img src={`operators/${operator.logo}`} alt={operator.name} />
+    </span>
+  );
 }
 
 function CmsTag({ children }: { children: React.ReactNode }) {
@@ -171,7 +176,7 @@ export default function Home() {
         <h1>Dicas de apostas e melhores odds</h1>
         <p className="intro-copy">Compare as casas parceiras do Jogo a Jogo, veja os palpites do dia e encontre oportunidades em operadores autorizados.</p>
         <div className="partner-strip">
-          {operators.map((operator) => <button key={operator.name} onClick={() => document.querySelector("#operadores")?.scrollIntoView({ behavior: "smooth" })}><OperatorName operator={operator} /></button>)}
+          {operators.map((operator) => <button key={operator.name} onClick={() => document.querySelector("#operadores")?.scrollIntoView({ behavior: "smooth" })}><OperatorLogo operator={operator} /></button>)}
         </div>
       </section>
 
@@ -183,7 +188,7 @@ export default function Home() {
         </div>
         <article className="boost-card">
           <div className="boost-operator">
-            <OperatorName operator={operators[2]} />
+            <OperatorLogo operator={operators[1]} />
             <span>BOOST EXCLUSIVO</span>
           </div>
           <div className="boost-match">
@@ -193,12 +198,12 @@ export default function Home() {
           </div>
           <div className="boost-price">
             <span>ODD ORIGINAL <s>2.30</s></span>
-            <button onClick={() => demonstrate("Link demonstrativo para a Betnacional")}>ODD TURBINADA <b>2.70</b></button>
+            <button onClick={() => demonstrate("Link demonstrativo para a bet365")}>ODD TURBINADA <b>2.70</b></button>
           </div>
           <div className="ad-warning">
             <b>18+</b><span>Ministério da Fazenda adverte: Aposta não é investimento.</span>
           </div>
-          <p className="operator-disclosure">NSX Brasil S.A. · CNPJ 55.056.104/0001-00 · Portaria SPA/MF nº 2.092/2024 · Aplicam-se termos e condições.</p>
+          <p className="operator-disclosure">Hillside (Brazil) Ltda. · CNPJ 47.123.407/0001-70 · Portaria SPA/MF nº 250/2025 · Aplicam-se termos e condições.</p>
         </article>
       </section>
 
@@ -253,7 +258,7 @@ export default function Home() {
           <div className="odds-head"><span>Casa de apostas</span><span>Odd</span><span>Retorno estimado</span><span /></div>
           {rankedOperators.map((operator, index) => (
             <div className="odds-row" key={operator.name}>
-              <div><OperatorName operator={operator} /><small>{index === 0 ? "Melhor odd" : "Operador autorizado"}</small></div>
+              <div><OperatorLogo operator={operator} /><small>{index === 0 ? "Melhor odd" : "Operador autorizado"}</small></div>
               <strong>{operator.odds[market].toFixed(2)}</strong>
               <span>{(100 * operator.odds[market]).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span>
               <button onClick={() => demonstrate(`Link demonstrativo para ${operator.name}`)}>Apostar ↗</button>
@@ -300,7 +305,7 @@ export default function Home() {
         <div className="operator-grid">
           {operators.map((operator) => (
             <article key={operator.name}>
-              <OperatorName operator={operator} />
+              <OperatorLogo operator={operator} />
               <span className="authorized">✓ Autorizada</span>
               <p><strong>CNPJ</strong>{operator.cnpj}</p>
               <p><strong>Autorização</strong>{operator.portaria}</p>
