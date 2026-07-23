@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import OddsAssistant from "./components/OddsAssistant";
 
 type Operator = {
   name: string;
@@ -43,6 +44,13 @@ const dailyTickets = [
     odd: "1.72",
     profile: "ESCOLHA DO DIA",
   },
+];
+
+const agendaFixtures = [
+  { league: "Copa Sul-Americana 2026", time: "23:00 · 23/07", home: "BOL", away: "GRE", odds: ["1.62", "4.10", "5.55"], status: "PRÉ-JOGO" },
+  { league: "Brasileirão Série A 2026", time: "23:30 · 23/07", home: "COR", away: "REM", odds: ["1.58", "4.10", "6.90"], status: "PRÉ-JOGO", href: "jogo/corinthians-remo/" },
+  { league: "Brasileirão Série A 2026", time: "23:30 · 23/07", home: "BOT", away: "VIT", odds: ["1.76", "3.68", "5.00"], status: "PRÉ-JOGO" },
+  { league: "Copa Sul-Americana 2026", time: "01:30 · 24/07", home: "BOC", away: "OHI", odds: ["1.47", "4.30", "7.10"], status: "EM BREVE" },
 ];
 
 const championships = [
@@ -217,6 +225,31 @@ export default function Home() {
       </header>
 
       <div className="ad-space"><span>PUBLICIDADE</span><div>970 × 90</div></div>
+
+      <section className="agenda-module">
+        <div className="agenda-inner">
+          <div className="agenda-sidebar">
+            <h2>Agenda</h2>
+            <select aria-label="Período dos jogos"><option>Próximos jogos</option><option>Ao vivo</option><option>Encerrados</option></select>
+            <button>Todos os jogos</button>
+          </div>
+          <div className="agenda-content">
+            <div className="agenda-track">
+              {agendaFixtures.map((fixture) => (
+                <a className="agenda-card" href={fixture.href || "#comparador"} key={`${fixture.home}-${fixture.away}`}>
+                  <div><strong>{fixture.league}</strong><span>{fixture.time}</span></div>
+                  <div className="agenda-teams"><b>{fixture.home}</b><span>×</span><b>{fixture.away}</b></div>
+                  <div className="agenda-odds">
+                    {fixture.odds.map((odd, index) => <span key={odd}><small>{["1", "X", "2"][index]}</small><b>{odd}</b></span>)}
+                  </div>
+                  <em>{fixture.status}</em>
+                </a>
+              ))}
+            </div>
+            <p className="agenda-legal"><b>18+</b> Ministério da Fazenda adverte: Aposta não é investimento.</p>
+          </div>
+        </div>
+      </section>
 
       <section className="page-shell intro" id="inicio">
         <CmsTag>faixaLimpa · 12 colunas</CmsTag>
@@ -465,6 +498,7 @@ export default function Home() {
         {operators.map((operator) => <span key={operator.name}>{operator.name}: CNPJ {operator.cnpj} · {operator.portaria}</span>)}
       </div>
 
+      <OddsAssistant />
       {toast && <div className="toast">{toast}</div>}
     </main>
   );
