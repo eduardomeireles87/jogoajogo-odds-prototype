@@ -109,6 +109,33 @@ const latestNews = [
   },
 ];
 
+const bettingGuides = [
+  {
+    category: "OFERTAS",
+    title: 'Inglaterra x Argentina: duelo tem "Tá Pago" e "Aposta Sem Risco"',
+    image: "https://i0.statig.com.br/bancodeimagens/77/8y/qm/778yqm20gb2lwr03wbl8xo265.jpg",
+    href: "https://esporte.ig.com.br/jogoajogo/2026-07-15/copa-do-mundo-semifinal-inglaterra-argentina-superbet-ofertas-ta-pago-aposta-sem-risco.html",
+  },
+  {
+    category: "OFERTA",
+    title: "bet365 lança o Desafio de 6 Placares para o Brasileirão",
+    image: "https://i0.statig.com.br/bancodeimagens/28/g5/le/28g5lev2ujmnl3ssailqtjmvq.jpg",
+    href: "https://esporte.ig.com.br/jogoajogo/2026-07-15/brasileirao-serie-a-bet365-desafio-6-placares-acerto-premios-dinheiro-creditos-apostas.html",
+  },
+  {
+    category: "COPA 2026",
+    title: "França x Marrocos: prognóstico da luta por vaga na semifinal",
+    image: "https://i0.statig.com.br/bancodeimagens/9x/ux/t7/9xuxt76b1d2x83lxzymogkmlq.jpg",
+    href: "https://esporte.ig.com.br/jogoajogo/2026-07-09/franca-marrrocos-copa-do-mundo-2026-quartas-de-final-dica-gol-prognostico.html",
+  },
+  {
+    category: "COPA 2026",
+    title: "França x Marrocos: revanche terá Segunda Chance da Betnacional",
+    image: "https://i0.statig.com.br/bancodeimagens/ct/83/o1/ct83o1cvyo89xov75h2sl4x7s.jpg",
+    href: "https://esporte.ig.com.br/jogoajogo/2026-07-08/franca-marrocos-copa-do-mundo-2026-quartas-de-final-apostas-esportivas-ofertas.html",
+  },
+];
+
 const legalText = (operator: Operator) =>
   `${operator.name} — CNPJ ${operator.cnpj} · ${operator.portaria}`;
 
@@ -371,13 +398,20 @@ export default function Home() {
 
       <section className="guides-band" id="guias">
         <div className="page-shell">
-          <CmsTag>faixaTemas · 3 × col-sm-4</CmsTag>
-          <div className="section-title"><div><span className="kicker">CONTEÚDO DE SERVIÇO</span><h2>Guia para apostas</h2></div><a href="#">Ver todos</a></div>
+          <CmsTag>listaNoticias · 4 cards</CmsTag>
+          <div className="section-title"><div><h2>Guia para apostas</h2></div></div>
           <div className="guide-grid">
-            <article><span>01</span><small>GUIA</small><h3>Como comparar odds entre diferentes casas</h3><a href="#">Ler guia →</a></article>
-            <article><span>02</span><small>EXPLICADOR</small><h3>O que significa 1, X e 2 nas apostas</h3><a href="#">Ler guia →</a></article>
-            <article><span>03</span><small>JOGO RESPONSÁVEL</small><h3>Como definir limites antes de começar</h3><a href="#">Ler guia →</a></article>
+            {bettingGuides.map((guide) => (
+              <article key={guide.title}>
+                <a href={guide.href} target="_blank" rel="noreferrer">
+                  <img loading="lazy" src={guide.image} alt="" />
+                  <span>{guide.category}</span>
+                  <h3>{guide.title}</h3>
+                </a>
+              </article>
+            ))}
           </div>
+          <a className="guides-all" href="https://esporte.ig.com.br/jogoajogo/noticias/guia-para-apostas" target="_blank" rel="noreferrer">Ver todas</a>
         </div>
       </section>
 
