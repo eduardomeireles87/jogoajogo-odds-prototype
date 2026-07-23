@@ -150,7 +150,7 @@ export default function Home() {
 
       <header className="jj-header">
         <div className="jj-header-inner">
-          <a href="#inicio"><img src="/jogoajogo-logo.png" alt="Jogo a Jogo" /></a>
+          <a href="#inicio"><img src="jogoajogo-logo.png" alt="Jogo a Jogo" /></a>
           <button className="mobile-menu" onClick={() => setMenuOpen(!menuOpen)}>Menu</button>
           <nav className={menuOpen ? "open" : ""}>
             <a href="#palpites">Palpites</a>
