@@ -6,6 +6,7 @@ import OddsAssistant from "./components/OddsAssistant";
 
 type Operator = {
   name: string;
+  legalName: string;
   key: string;
   logo: string;
   surface: string;
@@ -15,11 +16,11 @@ type Operator = {
 };
 
 const operators: Operator[] = [
-  { name: "7K", key: "seven", logo: "7kbet.svg", surface: "#171b18", cnpj: "55.933.850/0001-34", portaria: "SPA/MF nº 322/2025", odds: [1.57, 4.15, 6.75] },
-  { name: "bet365", key: "bet365", logo: "bet365.webp", surface: "#087b5d", cnpj: "47.123.407/0001-70", portaria: "SPA/MF nº 250/2025", odds: [1.58, 4.1, 6.9] },
-  { name: "Superbet", key: "superbet", logo: "superbet.webp", surface: "#ed1c24", cnpj: "54.071.596/0001-40", portaria: "SPA/MF nº 2.090/2024", odds: [1.59, 4.05, 6.8] },
-  { name: "Betnacional", key: "betnacional", logo: "betnacional.webp", surface: "#006f44", cnpj: "55.056.104/0001-00", portaria: "SPA/MF nº 2.092/2024", odds: [1.6, 4.2, 6.7] },
-  { name: "Novibet", key: "novibet", logo: "novibet.webp", surface: "#26348a", cnpj: "50.587.712/0001-27", portaria: "SPA/MF nº 249/2025", odds: [1.62, 4.0, 6.65] },
+  { name: "7K", legalName: "ANA Gaming Brasil S.A.", key: "seven", logo: "7kbet.svg", surface: "#171b18", cnpj: "55.933.850/0001-34", portaria: "SPA/MF nº 322, de 17/02/2025", odds: [1.57, 4.15, 6.75] },
+  { name: "bet365", legalName: "HS do Brasil Ltda.", key: "bet365", logo: "bet365.webp", surface: "#087b5d", cnpj: "47.123.407/0001-70", portaria: "SPA/MF nº 250, de 07/02/2025", odds: [1.58, 4.1, 6.9] },
+  { name: "Superbet", legalName: "SPRBT Interactive Brasil Ltda.", key: "superbet", logo: "superbet.webp", surface: "#ed1c24", cnpj: "54.071.596/0001-40", portaria: "SPA/MF nº 2.090, de 30/12/2024", odds: [1.59, 4.05, 6.8] },
+  { name: "Betnacional", legalName: "NSX Brasil S.A.", key: "betnacional", logo: "betnacional.webp", surface: "#006f44", cnpj: "55.056.104/0001-00", portaria: "SPA/MF nº 2.092, de 30/12/2024", odds: [1.6, 4.2, 6.7] },
+  { name: "Novibet", legalName: "NVBT Gaming Ltda.", key: "novibet", logo: "novibet.webp", surface: "#26348a", cnpj: "50.587.712/0001-27", portaria: "SPA/MF nº 249, de 07/02/2025", odds: [1.62, 4.0, 6.65] },
 ];
 
 const picks = [
@@ -80,11 +81,20 @@ const championships = [
 
 const latestNews = [
   {
+    category: "PROGRAMAÇÃO",
+    title: "Futebol na TV: Grêmio e Corinthians entre os destaques do dia",
+    description: "Equipes brasileiras têm compromissos pela Série A e pela Copa Sul-Americana; saiba onde assistir aos duelos.",
+    image: "https://i0.statig.com.br/bancodeimagens/4q/75/50/4q7550plbwkhyqpg8iixik9bo.jpg",
+    href: "https://esporte.ig.com.br/jogoajogo/2026-07-23/futebol-na-tv-quinta-feira-programacao-brasileirao-liga-europa-corinthians-gremio-onde-assistir.html",
+    time: "HÁ 20 MINUTOS",
+  },
+  {
     category: "BRASILEIRÃO",
     title: "Corinthians tenta se aproximar do G-4 contra o ameaçado Remo",
     description: "Timão quer vencer de olho na zona da Libertadores, enquanto o Leão Azul luta para sair do Z-4.",
     image: "https://i0.statig.com.br/bancodeimagens/71/o0/c0/71o0c0vchrh6cba9voi511v89.jpg",
     href: "https://esporte.ig.com.br/jogoajogo/2026-07-23/corinthians-remo-brasileirao-19-rodada-prognostico-onde-assistir.html",
+    time: "HÁ 14 HORAS",
   },
   {
     category: "BRASILEIRÃO",
@@ -92,6 +102,7 @@ const latestNews = [
     description: "Equipes fazem confronto direto para se aproximar do G-4 do Brasileirão.",
     image: "https://i0.statig.com.br/bancodeimagens/1e/ls/pg/1elspg14mqevimbhhzg6zot2s.jpg",
     href: "https://esporte.ig.com.br/jogoajogo/2026-07-22/botafogo-vitoria-brasileirao-4-rodada-prognostico-onde-assistir.html",
+    time: "22/07/2026 · 23:48",
   },
   {
     category: "TRANSFERÊNCIAS",
@@ -99,14 +110,16 @@ const latestNews = [
     description: "São Paulo, Corinthians e Santos entraram na janela sem poder inscrever novos jogadores.",
     image: "https://i0.statig.com.br/bancodeimagens/48/c9/27/48c92752b8kk3crx6lamhjg5s.jpg",
     href: "https://esporte.ig.com.br/jogoajogo/2026-07-22/transfer-ban-3-clubes-brasileiros-impedidos-contratar-sao-paulo-corinthians-santos.html",
+    time: "22/07/2026 · 18:10",
   },
-  {
-    category: "SUL-AMERICANA",
-    title: "Grêmio desafia altitude contra o Bolívar nos playoffs das oitavas",
-    description: "Equipe de Luís Castro enfrenta os 3.650 metros de La Paz no mata-mata continental.",
-    image: "https://i0.statig.com.br/bancodeimagens/3x/32/a1/3x32a1wpfd56zy12xts1cjwe2.jpg",
-    href: "https://esporte.ig.com.br/jogoajogo/2026-07-22/bolivar-gremio-sul-americana-playoffs-oitavas-de-final-onde-assistir.html",
-  },
+];
+
+const mostRead = [
+  "Futebol na TV: veja os jogos de hoje e onde assistir",
+  "Corinthians x Remo: horário, odds e transmissão",
+  "Brasileirão Série A: classificação e próximos jogos",
+  "Bolívar x Grêmio: dados do pré-jogo",
+  "Compare as odds dos jogos desta rodada",
 ];
 
 const bettingGuides = [
@@ -137,7 +150,7 @@ const bettingGuides = [
 ];
 
 const legalText = (operator: Operator) =>
-  `${operator.name} — CNPJ ${operator.cnpj} · ${operator.portaria}`;
+  `${operator.legalName} — CNPJ ${operator.cnpj} · ${operator.portaria}`;
 
 const igChannels = [
   ["Home", "https://www.ig.com.br/"],
@@ -290,7 +303,7 @@ export default function Home() {
               <div className="ad-warning">
                 <b>18+</b><span>Ministério da Fazenda adverte: Aposta não é investimento.</span>
               </div>
-              <p className="operator-disclosure">Hillside (Brazil) Ltda. · CNPJ 47.123.407/0001-70 · Portaria SPA/MF nº 250/2025.</p>
+              <p className="operator-disclosure">HS do Brasil Ltda. · CNPJ 47.123.407/0001-70 · Portaria SPA/MF nº 250, de 07/02/2025.</p>
             </article>
           ))}
         </div>
@@ -433,26 +446,46 @@ export default function Home() {
       </section>
 
       <section className="latest-news" id="fique-por-dentro">
-        <div className="page-shell">
+        <div className="editorial-shell">
           <CmsTag>componenteAjax · empilhamento editorial</CmsTag>
           <div className="section-title">
             <div><h2>Fique por dentro</h2></div>
             <a href="https://esporte.ig.com.br/jogoajogo/">Ver todas</a>
           </div>
-          <div className="news-grid">
-            {latestNews.map((article) => (
-              <article key={article.title}>
-                <a href={article.href} target="_blank" rel="noreferrer">
-                  <img loading="lazy" src={article.image} alt="" />
-                  <div>
-                    <span>{article.category}</span>
-                    <h3>{article.title}</h3>
-                    <p>{article.description}</p>
-                    <small>Leia mais →</small>
-                  </div>
-                </a>
-              </article>
-            ))}
+          <div className="editorial-layout">
+            <div className="news-list">
+              {latestNews.map((article) => (
+                <article key={article.title}>
+                  <a href={article.href} target="_blank" rel="noreferrer">
+                    <img loading="lazy" src={article.image} alt="" />
+                    <div>
+                      <span>{article.category}</span>
+                      <h3>{article.title}</h3>
+                      <p>{article.description}</p>
+                      <small>{article.time}</small>
+                    </div>
+                  </a>
+                </article>
+              ))}
+            </div>
+            <aside className="home-sidebar" aria-label="Conteúdo complementar">
+              <div className="sidebar-ad"><span>PUBLICIDADE</span><div>300 × 250</div></div>
+              <section className="newsletter-card">
+                <span>NEWSLETTER JOGO A JOGO</span>
+                <h3>Odds, jogos e dados no seu e-mail</h3>
+                <p>Receba a agenda do dia e os destaques do futebol.</p>
+                <label><span>Seu e-mail</span><input type="email" placeholder="nome@email.com" /></label>
+                <button onClick={() => demonstrate("Cadastro demonstrativo da newsletter")}>QUERO RECEBER</button>
+                <small>Ao cadastrar, você aceita a Política de Privacidade do iG.</small>
+              </section>
+              <section className="most-read">
+                <h3>Mais Lidas</h3>
+                <ol>
+                  {mostRead.map((title, index) => <li key={title}><b>{String(index + 1).padStart(2, "0")}</b><a href="#fique-por-dentro">{title}</a></li>)}
+                </ol>
+              </section>
+              <div className="sidebar-ad"><span>PUBLICIDADE</span><div>300 × 250</div></div>
+            </aside>
           </div>
         </div>
       </section>
@@ -462,6 +495,31 @@ export default function Home() {
           <b>18+</b>
           <div><span className="kicker">JOGO RESPONSÁVEL</span><h2>Aposta é entretenimento, não investimento.</h2><p>Não use dinheiro de gastos essenciais e nunca tente recuperar perdas. Se precisar, utilize a plataforma centralizada de autoexclusão.</p></div>
           <a href="https://www.gov.br/autoexclusaoapostas" target="_blank" rel="noreferrer">Acessar autoexclusão ↗</a>
+        </div>
+      </section>
+
+      <section className="betting-footer" aria-label="Informações legais e jogo responsável">
+        <div className="betting-footer-inner">
+          <div className="betting-footer-intro">
+            <span className="kicker">TRANSPARÊNCIA E JOGO RESPONSÁVEL</span>
+            <h2>Jogue com responsabilidade</h2>
+            <p>Conteúdo publicitário identificado. Odds podem mudar. Consulte sempre os termos do operador e não utilize dinheiro destinado a despesas essenciais.</p>
+            <nav aria-label="Links de proteção ao apostador">
+              <a href="https://www.gov.br/autoexclusaoapostas" target="_blank" rel="noreferrer"><b>18+</b> Autoexclusão</a>
+              <a href="https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas" target="_blank" rel="noreferrer">Ministério da Fazenda</a>
+              <a href="https://www.jogadoresanonimos.com.br/" target="_blank" rel="noreferrer">Jogadores Anônimos</a>
+            </nav>
+          </div>
+          <div className="legal-operators">
+            <h3>Operadores parceiros autorizados</h3>
+            {operators.map((operator) => (
+              <div key={operator.name}>
+                <OperatorLogo operator={operator} />
+                <p><strong>{operator.legalName}</strong><span>CNPJ {operator.cnpj}</span><span>Portaria {operator.portaria}</span></p>
+              </div>
+            ))}
+            <small>Autorizações consultadas na relação oficial da Secretaria de Prêmios e Apostas. Validação jurídica necessária antes da publicação.</small>
+          </div>
         </div>
       </section>
 
@@ -506,7 +564,7 @@ export default function Home() {
 
       <div className="regulatory-dock">
         <strong>18+ • OPERADORES EXIBIDOS</strong>
-        {operators.map((operator) => <span key={operator.name}>{operator.name}: CNPJ {operator.cnpj} · {operator.portaria}</span>)}
+        {operators.map((operator) => <span key={operator.name}>{operator.name}: {operator.legalName} · CNPJ {operator.cnpj} · {operator.portaria}</span>)}
       </div>
 
       <OddsAssistant />
