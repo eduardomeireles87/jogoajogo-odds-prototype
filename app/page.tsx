@@ -268,15 +268,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="page-shell intro" id="inicio">
-        <CmsTag>faixaLimpa · 12 colunas</CmsTag>
-        <p className="breadcrumb">iG › Esporte › Jogo a Jogo</p>
-        <h1>Dicas de apostas e melhores odds</h1>
-        <p className="intro-copy">Compare as casas parceiras do Jogo a Jogo, veja os palpites do dia e encontre oportunidades em operadores autorizados.</p>
-        <div className="partner-strip">
-          {operators.map((operator) => <button key={operator.name} onClick={() => document.querySelector("#operadores")?.scrollIntoView({ behavior: "smooth" })}><OperatorLogo operator={operator} /></button>)}
-        </div>
-      </section>
 
       <section className="page-shell boost-section">
         <CmsTag>compHtml-multi-canais · 12 colunas</CmsTag>
