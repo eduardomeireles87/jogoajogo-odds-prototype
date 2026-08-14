@@ -1,6 +1,7 @@
 /** Cloudflare Worker entry point for the vinext-starter template. */
 import { handleImageOptimization, DEFAULT_DEVICE_SIZES, DEFAULT_IMAGE_SIZES } from "vinext/server/image-optimization";
 import handler from "vinext/server/app-router-entry";
+import { lookupPrognosticoLink } from "./prognosticos";
 
 interface Env {
   ASSETS: Fetcher;
@@ -38,6 +39,35 @@ const worker = {
           return result.response();
         },
       }, allowedWidths);
+    }
+
+    if (url.pathname === "/api/prognostico-link") {
+      const home = url.searchParams.get("home")?.trim() ?? "";
+      const away = url.searchParams.get("away")?.trim() ?? "";
+
+      if (!home || !away) {
+        return Response.json(
+          { error: "Use query params home and away. Example: ?home=Sport&away=Londrina" },
+          { status: 400 },
+        );
+      }
+
+      try {
+        const result = await lookupPrognosticoLink({ home, away });
+        return Response.json(result, {
+          headers: {
+            "cache-control": "public, max-age=300",
+          },
+        });
+      } catch (error) {
+        return Response.json(
+          {
+            error: "Could not read prognosticos RSS",
+            detail: error instanceof Error ? error.message : "Unknown error",
+          },
+          { status: 502 },
+        );
+      }
     }
 
     return handler.fetch(request, env, ctx);
