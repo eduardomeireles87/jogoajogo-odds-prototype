@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import IgHeader from "./components/IgHeader";
 import OddsAssistant from "./components/OddsAssistant";
 
@@ -15,6 +15,23 @@ type Operator = {
   odds: [number, number, number];
 };
 
+type PickItem = {
+  sport: string;
+  league: string;
+  home: string;
+  away: string;
+  homeCode: string;
+  awayCode: string;
+  time: string;
+  odds: [number, number, number];
+  verified: string;
+  verifiedOdd: string;
+  operator: string;
+};
+
+const DEFAULT_PROGNOSTICOS_URL =
+  "https://esporte.ig.com.br/jogoajogo/noticias/prognosticos";
+
 const operators: Operator[] = [
   { name: "7K", legalName: "ANA Gaming Brasil S.A.", key: "seven", logo: "7kbet.svg", surface: "#171b18", cnpj: "55.933.850/0001-34", portaria: "SPA/MF nº 322, de 17/02/2025", odds: [1.57, 4.15, 6.75] },
   { name: "bet365", legalName: "HS do Brasil Ltda.", key: "bet365", logo: "bet365.webp", surface: "#087b5d", cnpj: "47.123.407/0001-70", portaria: "SPA/MF nº 250, de 07/02/2025", odds: [1.58, 4.1, 6.9] },
@@ -23,11 +40,13 @@ const operators: Operator[] = [
   { name: "Novibet", legalName: "NVBT Gaming Ltda.", key: "novibet", logo: "novibet.webp", surface: "#26348a", cnpj: "50.587.712/0001-27", portaria: "SPA/MF nº 249, de 07/02/2025", odds: [1.62, 4.0, 6.65] },
 ];
 
-const picks = [
+const picks: PickItem[] = [
   { sport: "Futebol", league: "Brasileirão 2026", home: "Botafogo", away: "Vitória", homeCode: "BOT", awayCode: "VIT", time: "Hoje • 23:30", odds: [1.76, 3.7, 5.0], verified: "Botafogo / Empate", verifiedOdd: "1.15", operator: "Novibet" },
   { sport: "Futebol", league: "Brasileirão 2026", home: "Corinthians", away: "Remo", homeCode: "COR", awayCode: "REM", time: "Hoje • 23:30", odds: [1.52, 4.1, 6.9], verified: "Ambas marcam — Sim", verifiedOdd: "2.10", operator: "Novibet" },
   { sport: "Futebol", league: "Copa Sul-Americana", home: "Bolívar", away: "Grêmio", homeCode: "BOL", awayCode: "GRE", time: "Hoje • 23:00", odds: [1.73, 4.15, 5.4], verified: "Mais de 2,5 gols", verifiedOdd: "1.78", operator: "bet365" },
 ];
+
+const pickKey = (pick: PickItem) => `${pick.home}-${pick.away}`;
 
 const dailyTickets = [
   {
@@ -215,6 +234,7 @@ export default function Home() {
   const [toast, setToast] = useState("");
   const [championshipIndex, setChampionshipIndex] = useState(0);
   const [fixtureIndex, setFixtureIndex] = useState(0);
+  const [prognosticoLinks, setPrognosticoLinks] = useState<Record<string, string>>({});
 
   const rankedOperators = useMemo(
     () => [...operators].sort((a, b) => b.odds[market] - a.odds[market]),
@@ -230,6 +250,40 @@ export default function Home() {
     setToast(message);
     window.setTimeout(() => setToast(""), 2200);
   };
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function hydratePrognosticoLinks() {
+      const entries = await Promise.all(
+        picks.map(async (pick) => {
+          const params = new URLSearchParams({ home: pick.home, away: pick.away });
+          const response = await fetch(`/api/prognostico-link?${params.toString()}`);
+
+          if (!response.ok) {
+            return [pickKey(pick), DEFAULT_PROGNOSTICOS_URL] as const;
+          }
+
+          const data = (await response.json()) as { url?: string };
+          return [pickKey(pick), data.url ?? DEFAULT_PROGNOSTICOS_URL] as const;
+        }),
+      );
+
+      if (!cancelled) setPrognosticoLinks(Object.fromEntries(entries));
+    }
+
+    hydratePrognosticoLinks().catch(() => {
+      if (!cancelled) {
+        setPrognosticoLinks(
+          Object.fromEntries(picks.map((pick) => [pickKey(pick), DEFAULT_PROGNOSTICOS_URL])),
+        );
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <main className={cmsMode ? "cms-mode" : ""}>
@@ -326,7 +380,14 @@ export default function Home() {
                 <strong>{pick.operator}</strong>
                 <p>{pick.verified} <b>{pick.verifiedOdd}</b></p>
               </div>
-              <button className="pick-cta" onClick={() => demonstrate("Palpite aberto no protótipo")}>Ver palpite</button>
+              <a
+                className="pick-cta"
+                href={prognosticoLinks[pickKey(pick)] ?? DEFAULT_PROGNOSTICOS_URL}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Ver palpite
+              </a>
               <p className="card-legal">18+ • Ministério da Fazenda adverte: Aposta não é investimento.</p>
             </article>
           ))}
